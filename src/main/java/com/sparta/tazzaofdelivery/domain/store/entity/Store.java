@@ -1,6 +1,7 @@
 package com.sparta.tazzaofdelivery.domain.store.entity;
 
 import com.sparta.tazzaofdelivery.domain.menu.Menu;
+import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.user.User;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @Table(name="Store")
