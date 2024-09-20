@@ -1,7 +1,12 @@
 package com.sparta.tazzaofdelivery.domain.store.entity;
 
+<<<<<<< HEAD
 import com.sparta.tazzaofdelivery.domain.menu.Menu;
 import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
+=======
+import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
+import com.sparta.tazzaofdelivery.domain.order.entity.Order;
+>>>>>>> 39e584c084be50d0c16004ef5fd33a4348b453da
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.user.User;
 import jakarta.persistence.*;
@@ -49,6 +54,12 @@ public class Store {
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
     private List<Menu> menus = new ArrayList<>();
+<<<<<<< HEAD
+=======
+
+    @OneToMany(mappedBy="order")
+    private List<Order> orders = new ArrayList<>();
+>>>>>>> 39e584c084be50d0c16004ef5fd33a4348b453da
 
     public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, User user) {
         this.storeName = storeName;
