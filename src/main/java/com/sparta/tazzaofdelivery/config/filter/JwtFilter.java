@@ -46,7 +46,7 @@ public class JwtFilter implements Filter {
             return;
         }
 
-        String jwt = jwtUtil.subS(bearerJwt);
+        String jwt = jwtUtil.substringToken(bearerJwt);
 
         try {
             // JWT 유효성 검사와 claims 추출
@@ -79,14 +79,7 @@ public class JwtFilter implements Filter {
         }
     }
 
-    // JWT 추출
-    public String substringToken(String tokenValue) {
-        // 'Bearer' 로 시작하는 토큰 문자열에서 실제 JWT 추출
-        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
-            return tokenValue.substring(7);
-        }
-        throw new NullPointerException("Not Found Token");
-    }
+
 
     @Override
     public void destroy() {
