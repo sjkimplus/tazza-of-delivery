@@ -46,6 +46,14 @@ public class JwtUtil {
                         .compact();
     }
 
+    // JWT 추출
+    public String substringToken(String tokenValue) {
+        // 'Bearer' 로 시작하는 토큰 문자열에서 실제 JWT 추출
+        if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
+            return tokenValue.substring(7);
+        }
+        throw new NullPointerException("Not Found Token");
+    }
 
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()

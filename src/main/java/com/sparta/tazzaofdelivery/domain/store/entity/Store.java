@@ -1,5 +1,6 @@
 package com.sparta.tazzaofdelivery.domain.store.entity;
 
+import com.sparta.tazzaofdelivery.domain.menu.Menu;
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.user.User;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,8 +45,8 @@ public class Store {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-//    @OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
-//    private List<Menu> menus = new ArrayList<>();
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
+    private List<Menu> menus = new ArrayList<>();
 
     public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, User user) {
         this.storeName = storeName;
