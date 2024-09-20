@@ -47,4 +47,12 @@ public class User {
     @Column(name = "deleted_at")
     private LocalDateTime dateDeleted;
 
+    public User(long id, UserType userRole) {
+        this.id = id;
+        this.type = userRole;
+    }
+
+    public static User fromAuthUser(AuthUser authUser) {
+        return new User(authUser.getId(), authUser.getUserRole());
+    }
 }
