@@ -5,8 +5,8 @@ import com.sparta.tazzaofdelivery.config.annotation.Auth;
 import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetResponse;
 import com.sparta.tazzaofdelivery.domain.store.service.StoreService;
+import com.sparta.tazzaofdelivery.domain.user.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class StoreController {
 
     @PostMapping
     public ResponseEntity<StoreCreateResponse> createStore(@RequestBody StoreCreateRequest request, @Auth AuthUser authUser) {
-        StoreCreateResponse response = storeService.createStore(request,authUser.getId());
+        StoreCreateResponse response = storeService.createStore(request, authUser);
         return ResponseEntity.ok(response);
 
     }
@@ -31,10 +31,10 @@ public class StoreController {
         return ResponseEntity.ok(storeService.getAllStores());
     }
 
-    @GetMapping("/{storeId}")
-    public ResponseEntity<StoreGetResponse> getStoreAndMenu(@PathVariable Long storeId){
-        return ResponseEntity.ok(storeService.getStore(storeId));
-    }
+//    @GetMapping("/{storeId}")
+//    public ResponseEntity<StoreGetResponse> getStoreAndMenu(@PathVariable Long storeId){
+//        return ResponseEntity.ok(storeService.getStore(storeId));
+//    }
 
     @DeleteMapping("/{storeId}")
     public ResponseEntity<String> deleteStore(@PathVariable Long storeId, @Auth AuthUser user){

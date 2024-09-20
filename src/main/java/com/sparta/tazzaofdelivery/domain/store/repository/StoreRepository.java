@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     long countByAuthUserId(Long authUserId);
     long countByAuthOwnerIdAndStatus(Long ownerId, StoreStatus status);
+    long countByAuthUserIdAndStatus(Long authUserId, StoreStatus status);
 }

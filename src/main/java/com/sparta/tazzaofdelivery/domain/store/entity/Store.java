@@ -1,6 +1,7 @@
 package com.sparta.tazzaofdelivery.domain.store.entity;
 
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
+import com.sparta.tazzaofdelivery.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,34 +17,34 @@ import java.util.ArrayList;
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="store_id")
+    @Column(name = "store_id")
     private Long storeId;
 
-    @Column(name="store_name")
+    @Column(name = "store_name")
     private String storeName;
 
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private LocalTime createdAt;
 
-    @Column(name="closed_at")
+    @Column(name = "closed_at")
     private LocalTime closedAt;
 
-    @Column(name="minimum_order_quantity")
+    @Column(name = "minimum_order_quantity")
     private Long minimumOrderQuantity;
 
-    @Column(name="store_announcement")
+    @Column(name = "store_announcement")
     private String storeAnnouncement;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="store_status")
+    @Column(name = "store_status")
     private StoreStatus Status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
-    private List<Menu> menus = new ArrayList<>();
+//    @OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
+//    private List<Menu> menus = new ArrayList<>();
 
     public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, User user) {
         this.storeName = storeName;
@@ -53,9 +54,4 @@ public class Store {
         this.storeAnnouncement = storeAnnouncement;
         this.user = user;
     }
-
-
-
-
-
 }

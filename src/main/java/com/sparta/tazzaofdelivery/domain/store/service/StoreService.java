@@ -2,19 +2,22 @@ package com.sparta.tazzaofdelivery.domain.store.service;
 
 import com.sparta.tazzaofdelivery.domain.exception.ErrorCode;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetResponse;
-import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
-import com.sparta.tazzaofdelivery.domain.store.entity.Store;
-import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
+import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
+import com.sparta.tazzaofdelivery.domain.store.entity.Store;
+import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
+import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
+import com.sparta.tazzaofdelivery.domain.user.AuthUser;
+import com.sparta.tazzaofdelivery.domain.user.User;
+import com.sparta.tazzaofdelivery.domain.user.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -24,13 +27,13 @@ public class StoreService {
 
     // 가게 생성
     public StoreCreateResponse createStore(StoreCreateRequest request, AuthUser authUser) {
-        User user = user.fromAuthUser(authUser);
+        User user = User.fromAuthUser(authUser);
 
-        if(!authUser.getUserRole().equals(UserRole.OWNER)){
+        if(!authUser.getUserRole().equals(UserType.OWNER)){
             throw new TazzaException(ErrorCode.STORE_FORBIDDEN);
         }
 
-        int currentStoreCount = storeRepository.countByAuthOwnerIdAndStatus(authUser.getId(), StoreStatus.ACTIVE);
+        long currentStoreCount = storeRepository.countByAuthOwnerIdAndStatus(authUser.getId(), StoreStatus.ACTIVE);
         if(currentStoreCount >= 3){
             throw new TazzaException(ErrorCode.STORE_BAD_REQUEST);
         }
@@ -68,28 +71,28 @@ public class StoreService {
     }
 
 
-    // 가게 단건 조회
-    @Transactional(readOnly = true)
-    public StoreGetResponse getStore(Long storeId) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
-
-        List<MenuResponse> menuResponses = new ArrayList<>();
-        for (Menu menu : store.getMenus()){
-            MenuResponse menuResponse = new MenuReponse(menu.getMenuId(),menu.getMenuName(), menu.getPrice());
-            menuResponses.add(menuResponse);
-        }
-
-        return new StoreGetResponse(store.getStoreName(), menuResponses);
-
-    }
+//    // 가게 단건 조회
+//    @Transactional(readOnly = true)
+//    public StoreGetResponse getStore(Long storeId) {
+//        Store store = storeRepository.findById(storeId)
+//                .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
+//
+//        List<MenuResponse> menuResponses = new ArrayList<>();
+//        for (Menu menu : store.getMenus()){
+//            MenuResponse menuResponse = new MenuReponse(menu.getMenuId(),menu.getMenuName(), menu.getPrice());
+//            menuResponses.add(menuResponse);
+//        }
+//
+//        return new StoreGetResponse(store.getStoreName(), menuResponses);
+//
+//    }
 
     // 가게 폐업
     public void deleteStore(Long storeId, AuthUser authUser){
         Store store = storeRepository.findById(storeId).orElseThrow(()
                 -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
 
-        if(!authUser.getUserId().equals(storeId)){
+        if(!Objects.equals(authUser.getId(), storeId)){
             throw new TazzaException(ErrorCode.STORE_DELETE_FORBIDDEN);
         }
         store.setStatus(StoreStatus.CLOSED);
