@@ -54,12 +54,11 @@ public class Store {
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
     private List<Menu> menus = new ArrayList<>();
-<<<<<<< HEAD
-=======
+
 
     @OneToMany(mappedBy="order")
     private List<Order> orders = new ArrayList<>();
->>>>>>> 39e584c084be50d0c16004ef5fd33a4348b453da
+
 
     public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, User user) {
         this.storeName = storeName;

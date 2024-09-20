@@ -29,7 +29,7 @@ public class Menu {
     @Column(name = "category", nullable = false)
     private Category category;
 
-<<<<<<< HEAD
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
@@ -39,13 +39,13 @@ public class Menu {
         this.price = request.getPrice();
         this.category = request.getCategory();
     }
-=======
+
 //    public Menu(MenuSaveRequest request) {
 //        this.menuName = request.getMenuName();
 //        this.price = request.getPrice();
 //        this.category = request.getCategory();
 //    }
->>>>>>> 39e584c084be50d0c16004ef5fd33a4348b453da
+
 
 
 
