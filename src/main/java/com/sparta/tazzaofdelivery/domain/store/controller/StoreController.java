@@ -6,7 +6,7 @@ import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
 import com.sparta.tazzaofdelivery.domain.store.service.StoreService;
-import com.sparta.tazzaofdelivery.domain.user.AuthUser;
+import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
