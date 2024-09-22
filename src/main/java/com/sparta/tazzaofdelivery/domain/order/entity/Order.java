@@ -4,7 +4,7 @@ import com.sparta.tazzaofdelivery.domain.order.orderconfig.OrderStatus;
 import com.sparta.tazzaofdelivery.domain.order.orderconfig.OrderStatusConverter;
 
 import com.sparta.tazzaofdelivery.domain.store.entity.Store;
-import com.sparta.tazzaofdelivery.domain.user.User;
+import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

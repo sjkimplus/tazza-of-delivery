@@ -1,8 +1,8 @@
 package com.sparta.tazzaofdelivery.config.authconfig;
 
 import com.sparta.tazzaofdelivery.config.annotation.Auth;
-import com.sparta.tazzaofdelivery.domain.user.AuthUser;
-import com.sparta.tazzaofdelivery.domain.user.UserType;
+import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
+import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
@@ -37,8 +37,8 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
         // JwtFilter 에서 set 한 id 값을 가져옴
         Long userId = (Long) request.getAttribute("id");
-        UserType userRole = UserType.valueOf((String) request.getAttribute("userRole"));
+        UserType userType = UserType.valueOf((String) request.getAttribute("userType"));
 
-        return new AuthUser(userId, userRole);
+        return new AuthUser(userId, userType);
     }
 }
