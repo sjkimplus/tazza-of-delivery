@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "order")
 public class Order {
 
     // order_id : 주문 아이디 (PK)
