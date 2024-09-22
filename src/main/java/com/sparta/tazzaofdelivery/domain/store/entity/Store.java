@@ -3,7 +3,7 @@ package com.sparta.tazzaofdelivery.domain.store.entity;
 import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.order.entity.Order;
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
-import com.sparta.tazzaofdelivery.domain.user.User;
+import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
