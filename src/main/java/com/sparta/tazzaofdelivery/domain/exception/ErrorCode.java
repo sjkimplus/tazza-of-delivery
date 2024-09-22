@@ -22,6 +22,10 @@ public enum ErrorCode {
     ORDER_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 상태 코드 입니다."),
 
 
+    // Cart ErrorCode
+    CART_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니 상태 코드 입니다."),
+
+
     // Review Errorcode
 
 
