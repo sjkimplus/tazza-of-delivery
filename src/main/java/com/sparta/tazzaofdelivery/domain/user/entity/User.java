@@ -1,7 +1,11 @@
-package com.sparta.tazzaofdelivery.domain.user;
+package com.sparta.tazzaofdelivery.domain.user.entity;
 
+import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
+import com.sparta.tazzaofdelivery.domain.user.enums.UserStatus;
+import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,18 +15,20 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "user_pw", nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -30,29 +36,39 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserType type;
+    private UserType userType;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "modified_at", nullable = false)
-    private LocalDateTime modifiedDate;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalDateTime dateDeleted;
+    private LocalDateTime deletedAt;
+
+    public User(UserSignUpRequest userSignUpRequest, String password) {
+        this.email = userSignUpRequest.getEmail();
+        this.password = password;
+        this.name = userSignUpRequest.getName();
+        this.userType = userSignUpRequest.getUserType();
+        this.userStatus = UserStatus.ACTIVE;
+    }
 
     public User(long id, UserType userRole) {
-        this.id = id;
-        this.type = userRole;
+        this.userId = id;
+        this.userType = userRole;
     }
 
     public static User fromAuthUser(AuthUser authUser) {
         return new User(authUser.getId(), authUser.getUserRole());
     }
+
+
 }
