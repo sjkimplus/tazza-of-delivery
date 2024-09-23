@@ -50,8 +50,10 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Menu> menus = new ArrayList<>();
 
+
     @OneToMany(mappedBy="store")
     private List<Order> orders = new ArrayList<>();
+
 
     public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, User user) {
         this.storeName = storeName;

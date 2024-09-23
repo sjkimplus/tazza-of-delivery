@@ -1,6 +1,5 @@
 package com.sparta.tazzaofdelivery.domain.menu.entity;
 
-//import com.sparta.tazzaofdelivery.domain.menu.dto.request.MenuSaveRequest;
 import com.sparta.tazzaofdelivery.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,14 +24,24 @@ public class Menu {
     @Column(name = "category", nullable = false)
     private Category category;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
+
 //    public Menu(MenuSaveRequest request) {
 //        this.menuName = request.getMenuName();
 //        this.price = request.getPrice();
 //        this.category = request.getCategory();
 //    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
-    private Store store;
+//    public Menu(MenuSaveRequest request) {
+//        this.menuName = request.getMenuName();
+//        this.price = request.getPrice();
+//        this.category = request.getCategory();
+//    }
+
+
+
 
 }
