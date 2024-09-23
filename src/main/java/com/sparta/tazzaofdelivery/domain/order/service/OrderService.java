@@ -110,6 +110,17 @@ public class OrderService {
                 .build();
     }
 
+    // 배달 완료
+    public OrderStatusResponse completeOrder(AuthUser authUser, Long orderId) {
+        Order order = orderUserAuthentication(authUser.getId(), orderId);
+
+        order.approve(OrderStatus.COMPLETE);
+        return OrderStatusResponse.builder()
+                .orderId(order.getOrderId())
+                .orderStatus(order.getOrderStatus())
+                .build();
+    }
+
 
 
 
@@ -159,7 +170,5 @@ public class OrderService {
                 .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
         return store;
     }
-
-
 
 }

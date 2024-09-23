@@ -42,5 +42,14 @@ public class OrderController {
         return ResponseEntity.ok(orderService.deliverOrder(authUser,orderId));
     }
 
+    // 배달 완료
+    @PutMapping("/orders/{orderId}/order-complete")
+    public ResponseEntity<OrderStatusResponse> completeOrder(
+            @Auth AuthUser authUser,
+            @PathVariable("orderId") Long orderId
+    ){
+        return ResponseEntity.ok(orderService.completeOrder(authUser,orderId));
+    }
+
 
 }
