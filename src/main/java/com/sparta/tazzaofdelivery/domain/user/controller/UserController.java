@@ -1,11 +1,14 @@
 package com.sparta.tazzaofdelivery.domain.user.controller;
 
+import com.sparta.tazzaofdelivery.config.annotation.Auth;
 import com.sparta.tazzaofdelivery.config.filter.JwtUtil;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
+import com.sparta.tazzaofdelivery.domain.user.dto.request.UserUpdateRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginReponse;
-import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSearchResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSignUpResponse;
+import com.sparta.tazzaofdelivery.domain.user.dto.response.UserUpdateResponse;
+import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import com.sparta.tazzaofdelivery.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -31,12 +34,12 @@ public class UserController {
         return ResponseEntity.ok(userService.login(jwtUtil, userLoginRequest, httpServletResponse));
     }
 
-//    @PutMapping("/{userId}")
-//    public ResponseEntity<UserResponseDto> update(@Auth AuthUser authUser,
-//                                                  @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
-//        return ResponseEntity.ok(userService.update(authUser.getEmail(), userUpdateRequestDto));
-//    }
-//
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserUpdateResponse> update(@Auth AuthUser authUser,
+                                                     @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+        return ResponseEntity.ok(userService.update(authUser.getId(), userUpdateRequest));
+    }
+
 //    @DeleteMapping("/{userId}")
 //    public String delete(@Valid @RequestBody LoginRequestDto loginRequestDto) {
 //        return userService.delete(loginRequestDto);

@@ -4,18 +4,19 @@ import com.sparta.tazzaofdelivery.config.filter.JwtUtil;
 import com.sparta.tazzaofdelivery.config.passwordconfig.PasswordEncoder;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
+import com.sparta.tazzaofdelivery.domain.user.dto.request.UserUpdateRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginReponse;
-import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSignUpResponse;
 
+import com.sparta.tazzaofdelivery.domain.user.dto.response.UserUpdateResponse;
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.sparta.tazzaofdelivery.domain.exception.ErrorCode.*;
@@ -53,28 +54,30 @@ public class UserService {
         }
 
 
-        String token = jwtUtil.createToken(user.getEmail());
+        String token = jwtUtil.createToken(user.getUserId(), user.getEmail());
         jwtUtil.addJwtToCookie(token, httpServletResponse);
         return new UserLoginReponse(user);
     }
 
-//    @Transactional
-//    public UserResponseDto update(String email, UserUpdateRequestDto userUpdateRequestDto) {
-//        User user = findUser(email);
-//
-//        if (userUpdateRequestDto.getNewPassword() != null) {
-//            if (!passwordEncoder.matches(userUpdateRequestDto.getCurrentPassword(), user.getPassword())) {
-//                throw new PasswordMismatchException(email + " 의 " + "패스워드가 올바르지 않습니다.");
-//            }
-//            if (user.getPassword().equals(userUpdateRequestDto.getNewPassword())) {
-//                throw new DataDuplicationException("이전과 동일한 비밀번호 입니다. 새롭게 지정해주세요");
-//            }
-//            String password = passwordEncoder.encode(userUpdateRequestDto.getNewPassword());
-//            user.updatePassword(password);
-//        }
-//        user.update(userUpdateRequestDto);
-//        return new UserResponseDto(user);
-//    }
+    @Transactional
+    public UserUpdateResponse update(Long id, UserUpdateRequest userUpdateRequest) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new TazzaException(USER_NOT_FOUND)
+        );
+
+        if (userUpdateRequest.getNewPassword() != null) {
+            if (!passwordEncoder.matches(userUpdateRequest.getCurrentPassword(), user.getPassword())) {
+                throw new TazzaException(USER_PW_ERROR);
+            }
+            if (user.getPassword().equals(userUpdateRequest.getNewPassword())) {
+                throw new TazzaException(USER_SAME_PW_ERROR);
+            }
+            String password = passwordEncoder.encode(userUpdateRequest.getNewPassword());
+            user.updatePassword(password);
+        }
+        user.update(userUpdateRequest);
+        return new UserUpdateResponse(user, userUpdateRequest.getNewPassword());
+    }
 
 //    @Transactional
 //    public String delete(LoginRequestDto loginRequestDto) {
