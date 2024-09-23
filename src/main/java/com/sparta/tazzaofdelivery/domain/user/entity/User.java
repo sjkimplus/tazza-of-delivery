@@ -78,4 +78,12 @@ public class User {
     public static User fromAuthUser(AuthUser authUser) {
         return new User(authUser.getId(), authUser.getUserRole());
     }
+
+    public void deleteUpdate(LocalDateTime deleteTime){
+        this.deletedAt = deleteTime;
+    }
+
+    public void deactivateUser() {
+        this.userStatus = UserStatus.DELETED;
+    }
 }
