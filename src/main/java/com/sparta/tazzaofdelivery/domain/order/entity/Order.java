@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "order")
 public class Order {
 
     // order_id : 주문 아이디 (PK)
@@ -29,7 +30,7 @@ public class Order {
     private Double totalPrice;
 
     // order_created : 주문 시간
-    @Column(name="order_created", nullable = false)
+    @Column(name="created_at", nullable = false, updatable = false)
     private LocalDateTime orderCreated;
 
     // order_status : 주문 상태

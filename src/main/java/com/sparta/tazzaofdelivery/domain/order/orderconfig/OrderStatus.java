@@ -14,17 +14,17 @@ public enum OrderStatus {
     DELIVERY(2,"배달중"),   // 배달중
     COMPLETE(3,"배달완료");   // 배달완료
 
-    private final Integer code;
-    private final String description;
+    private final Integer orderCode;
+    private final String orderDesc;
 
-    OrderStatus(Integer code, String description) {
-        this.code = code;
-        this.description = description;
+    OrderStatus(Integer orderCode, String orderDesc) {
+        this.orderCode = orderCode;
+        this.orderDesc = orderDesc;
     }
 
     public static OrderStatus ofCode(Integer dbData) {
         return Arrays.stream(OrderStatus.values())
-                .filter(c -> c.getCode().equals(dbData))
+                .filter(c -> c.getOrderCode().equals(dbData))
                 .findAny()
                 .orElseThrow(()-> new TazzaException(ErrorCode.ORDER_STATUS_CODE_NOT_FOUND));
     }
