@@ -51,7 +51,7 @@ public class Store {
     private List<Menu> menus = new ArrayList<>();
 
 
-    @OneToMany(mappedBy="order")
+    @OneToMany(mappedBy="store")
     private List<Order> orders = new ArrayList<>();
 
 

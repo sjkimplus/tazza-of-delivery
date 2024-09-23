@@ -6,5 +6,6 @@ import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
-    long countByUserAndStatus(User user, StoreStatus status);
+
+//    long countByUserAndStatus(User user, StoreStatus status);
 }

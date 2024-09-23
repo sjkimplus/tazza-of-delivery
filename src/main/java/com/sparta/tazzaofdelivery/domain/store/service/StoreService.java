@@ -32,11 +32,11 @@ public class StoreService {
         if(!authUser.getUserRole().equals(UserType.OWNER)){
             throw new TazzaException(ErrorCode.STORE_FORBIDDEN);
         }
-
-        long currentStoreCount = storeRepository.countByUserAndStatus(user, StoreStatus.ACTIVE);
-        if(currentStoreCount >= 3){
-            throw new TazzaException(ErrorCode.STORE_BAD_REQUEST);
-        }
+//
+//        long currentStoreCount = storeRepository.countByUserAndStatus(user, StoreStatus.ACTIVE);
+//        if(currentStoreCount >= 3){
+//            throw new TazzaException(ErrorCode.STORE_BAD_REQUEST);
+//        }
 
         Store newStore = new Store(
                 request.getStoreName(),
