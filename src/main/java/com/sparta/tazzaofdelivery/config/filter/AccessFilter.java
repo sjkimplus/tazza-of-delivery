@@ -1,4 +1,4 @@
 //package com.sparta.tazzaofdelivery.config.filter;
 //
-//public class FilterConfig {
+//public class AccessFilter {
 //}

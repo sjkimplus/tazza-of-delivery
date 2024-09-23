@@ -3,10 +3,12 @@ package com.sparta.tazzaofdelivery.domain.user.service;
 import com.sparta.tazzaofdelivery.config.filter.JwtUtil;
 import com.sparta.tazzaofdelivery.config.passwordconfig.PasswordEncoder;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
+import com.sparta.tazzaofdelivery.domain.user.dto.request.UserDeleteRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserUpdateRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginReponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
+import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSearchResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSignUpResponse;
 
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserUpdateResponse;
@@ -53,6 +55,8 @@ public class UserService {
             throw new TazzaException(USER_PW_ERROR);
         }
 
+        if (user.getDeletedAt()!=null)
+            throw new TazzaException(USER_NOT_FOUND);
 
         String token = jwtUtil.createToken(user.getUserId(), user.getEmail());
         jwtUtil.addJwtToCookie(token, httpServletResponse);
@@ -79,35 +83,32 @@ public class UserService {
         return new UserUpdateResponse(user, userUpdateRequest.getNewPassword());
     }
 
-//    @Transactional
-//    public String delete(LoginRequestDto loginRequestDto) {
-//        User user = findUser(loginRequestDto.getEmail());
-//
-//        if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
-//            throw new PasswordMismatchException(loginRequestDto.getEmail() + " 의 " + "패스워드가 올바르지 않습니다.");
-//        }
-//
-//        user.deleteUpdate(java.time.LocalDateTime.now());
-//
-//        return "삭제 완료";
-//    }
+    @Transactional
+    public String delete(Long id, UserDeleteRequest userDeleteRequest) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new TazzaException(USER_NOT_FOUND)
+        );
 
-//    public User getUser(long id) {
-//        User user = userRepository.findById(id).orElseThrow(() ->  new TazzaException(USER_NOT_FOUND));
-//        if (user.getDeletedAt() != null) {
-//            throw new TazzaException(USER_NOT_FOUND);
-//        }
-//
-//        return user;
-//    }
-//
-//    public UserResponseDto findProfile(String email) {
-//        User user = getUser(email);
-//
-//        List<String> imageUrls = fileUtils.getImage(USER, user.getId());
-//
-//        return new UserResponseDto(user, imageUrls);
-//    }
+        if (!passwordEncoder.matches(userDeleteRequest.getPassword(), user.getPassword())) {
+            throw new TazzaException(USER_PW_ERROR);
+        }
+
+        user.deleteUpdate(java.time.LocalDateTime.now());
+        user.deactivateUser();
+
+        return "삭제 완료";
+    }
+
+
+    public UserSearchResponse find(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new TazzaException(USER_NOT_FOUND)
+        );
+
+        if (user.getDeletedAt()!=null)
+            throw new TazzaException(USER_NOT_FOUND);
+        return new UserSearchResponse(user);
+    }
 
 
 
