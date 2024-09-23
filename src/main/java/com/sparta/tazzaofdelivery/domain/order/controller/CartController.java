@@ -6,9 +6,7 @@ import com.sparta.tazzaofdelivery.domain.order.dto.response.CartCreateResponse;
 import com.sparta.tazzaofdelivery.domain.order.service.CartService;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +20,10 @@ public class CartController {
 
     // 장바구니 음식 담기
     @PostMapping("/carts")
-    public ResponseEntity<CartCreateResponse> createCart(
-            @RequestBody CartCreateRequest cartAddRequest,
+    public CartCreateResponse createCart(
+            @RequestBody CartCreateRequest cartCreateRequest,
             @Auth AuthUser authUser) {
-        return cartService.createCart(cartAddRequest,authUser);
+        return cartService.createCart(cartCreateRequest,authUser);
     }
 
 }

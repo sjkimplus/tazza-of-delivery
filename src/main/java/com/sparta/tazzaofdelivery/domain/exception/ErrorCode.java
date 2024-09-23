@@ -29,6 +29,7 @@ public enum ErrorCode {
 
     // Cart ErrorCode
     CART_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니 상태 코드 입니다."),
+    CART_USER_NOT_EXIST(HttpStatus.NOT_FOUND, "해당 유저의 장바구니가 좋재하지 않습니다."),
 
 
     // Review Errorcode
