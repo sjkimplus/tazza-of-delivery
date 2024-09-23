@@ -1,5 +1,6 @@
-package com.sparta.tazzaofdelivery.domain.user;
+package com.sparta.tazzaofdelivery.domain.user.entity;
 
+import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
 import lombok.Getter;
 
 @Getter
