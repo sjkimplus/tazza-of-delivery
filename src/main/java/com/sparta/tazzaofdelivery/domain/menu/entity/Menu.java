@@ -48,6 +48,7 @@ public class Menu {
     @JoinColumn(name = "store_id")
     private Store store;
 
+
     public void update(MenuUpdateRequest request) {
 
         if(request.getMenuName() != null){
