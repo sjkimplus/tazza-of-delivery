@@ -37,7 +37,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
         // JwtFilter 에서 set 한 id 값을 가져옴
         Long userId = (Long) request.getAttribute("id");
-        UserType userType = UserType.valueOf((String) request.getAttribute("userType"));
+        UserType userType = (UserType) request.getAttribute("userType");
 
         return new AuthUser(userId, userType);
     }

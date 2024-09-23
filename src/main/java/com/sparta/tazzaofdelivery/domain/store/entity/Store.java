@@ -41,7 +41,7 @@ public class Store {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "store_status")
-    private StoreStatus Status;
+    private StoreStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
