@@ -1,4 +1,4 @@
-package com.sparta.tazzaofdelivery.domain.user;
+package com.sparta.tazzaofdelivery.domain.user.enums;
 
 
 public enum UserType {
