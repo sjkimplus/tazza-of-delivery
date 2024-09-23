@@ -1,5 +1,6 @@
 package com.sparta.tazzaofdelivery.domain.store.dto.request;
 
+import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,5 @@ public class StoreCreateRequest {
     private LocalTime closedAt;
     private Long minimumOrderQuantity;
     private String storeAnnouncement;
+    private StoreStatus storeStatus;
 }

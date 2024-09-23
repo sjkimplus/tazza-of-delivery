@@ -55,12 +55,13 @@ public class Store {
     private List<Order> orders = new ArrayList<>();
 
 
-    public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, User user) {
+    public Store(String storeName, LocalTime createdAt, LocalTime closedAt, Long minimumOrderQuantity, String storeAnnouncement, StoreStatus storeStatus, User user) {
         this.storeName = storeName;
         this.createdAt = createdAt;
         this.closedAt = closedAt;
         this.minimumOrderQuantity = minimumOrderQuantity;
         this.storeAnnouncement = storeAnnouncement;
+        this.status = storeStatus;
         this.user = user;
     }
 }
