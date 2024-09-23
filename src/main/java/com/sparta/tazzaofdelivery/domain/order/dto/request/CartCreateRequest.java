@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class CartCreateRequest {
-    private Long munuId;
+    private Long menuId;
     private Long count;
 }

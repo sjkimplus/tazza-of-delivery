@@ -21,15 +21,17 @@ import java.util.Set;
 //@NoArgsConstructor
 
 //@Builder
+
 @Getter
 @Setter
 @RedisHash(value = "cart", timeToLive = 60 * 60 * 24)
 public class Cart {
 
     // cart_id : 장바구니 ID
+    //    @jakarta.persistence.Id
+
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", nullable = false)
     private Long cartId;
 

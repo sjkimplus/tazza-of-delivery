@@ -35,7 +35,7 @@ public class CartService {
 
     public CartCreateResponse createCart(CartCreateRequest cartCreateRequest, AuthUser authUser) {
         // 주문한 메뉴 찾기
-        Menu orderMenu = checkMenu(cartCreateRequest.getMunuId());
+        Menu orderMenu = checkMenu(cartCreateRequest.getMenuId());
         // 주문한 메뉴 개수
         Long menuCount = cartCreateRequest.getCount();
         // 사용자 찾기
