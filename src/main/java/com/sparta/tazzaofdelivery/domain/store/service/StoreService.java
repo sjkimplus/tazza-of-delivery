@@ -48,6 +48,7 @@ public class StoreService {
                 request.getClosedAt(),
                 request.getMinimumOrderQuantity(),
                 request.getStoreAnnouncement(),
+                request.getStoreStatus(),
                 user
         );
         Store savedStore = storeRepository.save(newStore);
@@ -57,7 +58,8 @@ public class StoreService {
                 savedStore.getCreatedAt(),
                 savedStore.getClosedAt(),
                 savedStore.getMinimumOrderQuantity(),
-                savedStore.getStoreAnnouncement()
+                savedStore.getStoreAnnouncement(),
+                savedStore.getStatus()
         );
     }
 

@@ -1,5 +1,7 @@
 package com.sparta.tazzaofdelivery.domain.menu.entity;
 
+import com.sparta.tazzaofdelivery.domain.exception.ErrorCode;
+import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.menu.dto.request.MenuSaveRequest;
 import com.sparta.tazzaofdelivery.domain.menu.dto.request.MenuUpdateRequest;
 import com.sparta.tazzaofdelivery.domain.store.entity.Store;
@@ -7,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -35,13 +39,22 @@ public class Menu {
     @Column(name = "is_deleted")
     private boolean isDeleted = Boolean.FALSE;
 
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public Menu(MenuSaveRequest request) {
+    public Menu(MenuSaveRequest request, Store store) {
         this.menuName = request.getMenuName();
         this.price = request.getPrice();
         this.category = request.getCategory();
+        this.store = store;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,7 +69,10 @@ public class Menu {
         }
 
         if(request.getPrice() != null){
-            this.price = request.getPrice();
+            if(request.getPrice() > 0){
+                this.price = request.getPrice();
+            }else throw new TazzaException(ErrorCode.MENU_INVALID_PRICE);
+
         }
 
         if(request.getCategory() != null){

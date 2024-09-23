@@ -28,6 +28,9 @@ public class Favorite {
     @Column(name="deleted_at")
     private LocalTime deletedAt;
 
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="store_id", nullable = false)
     private Store store;
@@ -36,4 +39,8 @@ public class Favorite {
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
+    public Favorite(User user, Store store) {
+        this.user = user;
+        this.store = store;
+    }
 }
