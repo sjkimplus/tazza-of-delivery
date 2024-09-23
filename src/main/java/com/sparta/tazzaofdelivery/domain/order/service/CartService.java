@@ -4,7 +4,9 @@ import com.sparta.tazzaofdelivery.domain.exception.ErrorCode;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.menu.repository.MenuRepository;
+import com.sparta.tazzaofdelivery.domain.order.dto.request.CartAddFoodRequest;
 import com.sparta.tazzaofdelivery.domain.order.dto.request.CartCreateRequest;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.CartAddFoodResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.CartCreateResponse;
 import com.sparta.tazzaofdelivery.domain.order.entity.Cart;
 import com.sparta.tazzaofdelivery.domain.order.orderconfig.CartStatus;
@@ -66,6 +68,20 @@ public class CartService {
         );
     }
 
+    public CartAddFoodResponse addFoodCartf(Long cartId, CartAddFoodRequest cartAddFoodRequest, AuthUser authUser) {
+        return null;
+    }
+
+    public void deleteCart(Long cartId, AuthUser authUser) {
+
+        String key = String.valueOf(cartId);
+
+        redisTemplate.opsForHash().delete(key);
+
+    }
+
+
+
     private Cart checkUserHasCart(Long userId) {
         return cartRepository.findById(userId).orElseThrow(()->new TazzaException(ErrorCode.CART_USER_NOT_EXIST));
     }
@@ -83,4 +99,7 @@ public class CartService {
         }
         return menu;
     }
+
+
+
 }
