@@ -29,7 +29,7 @@ public class MenuService {
 
         authCheck(authUser, store);
 
-        Menu menu = new Menu(request);
+        Menu menu = new Menu(request, store);
 
         menuRepository.save(menu);
 
@@ -60,6 +60,9 @@ public class MenuService {
     private Menu checkMenu(Long menuId) {
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new TazzaException(ErrorCode.MENU_NOT_FOUND));
+        if(menu.isDeleted()){
+            throw new TazzaException(ErrorCode.MENU_ISDELETED);
+        }
         return menu;
     }
 
