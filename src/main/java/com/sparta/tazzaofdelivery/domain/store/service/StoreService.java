@@ -33,7 +33,7 @@ public class StoreService {
             throw new TazzaException(ErrorCode.STORE_FORBIDDEN);
         }
 
-        long currentStoreCount = storeRepository.countByAuthOwnerIdAndStatus(authUser.getId(), StoreStatus.ACTIVE);
+        long currentStoreCount = storeRepository.countByUserAndStatus(user, StoreStatus.ACTIVE);
         if(currentStoreCount >= 3){
             throw new TazzaException(ErrorCode.STORE_BAD_REQUEST);
         }
