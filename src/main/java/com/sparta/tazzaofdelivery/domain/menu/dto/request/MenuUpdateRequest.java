@@ -13,7 +13,6 @@ public class MenuUpdateRequest {
 
     private String menuName;
 
-    @Min(value = 100, message = "가격은 100원 이상이어야 합니다.")
     private Integer price;
 
     private Category category;
