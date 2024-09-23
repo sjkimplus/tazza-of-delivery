@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CartCreateResponse {
-    private Long cartId;
-    private Long storeId;
-    private Long userId;
-    private Long menuId;
-    private Long menuCound;
-    private LocalDateTime cartCreatedAt;
-    private CartStatus cartStatus;
+    private final Long cartId;
+    private final Long storeId;
+    private final Long userId;
+    private final Long menuId;
+    private final Long menuCound;
+    private final LocalDateTime cartCreatedAt;
+    private final CartStatus cartStatus;
 
     @Builder
     public CartCreateResponse(

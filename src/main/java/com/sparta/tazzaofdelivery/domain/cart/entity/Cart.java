@@ -69,4 +69,8 @@ public class Cart {
         this.menuId = menuId;
         this.menuCount = count;
     }
+
+    public void updateStatus(CartStatus cartStatus) {
+        this.cartStatus=cartStatus;
+    }
 }
