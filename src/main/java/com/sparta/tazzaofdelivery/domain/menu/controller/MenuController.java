@@ -4,7 +4,7 @@ import com.sparta.tazzaofdelivery.config.annotation.Auth;
 import com.sparta.tazzaofdelivery.domain.menu.dto.request.MenuSaveRequest;
 import com.sparta.tazzaofdelivery.domain.menu.dto.request.MenuUpdateRequest;
 import com.sparta.tazzaofdelivery.domain.menu.service.MenuService;
-import com.sparta.tazzaofdelivery.domain.user.AuthUser;
+import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

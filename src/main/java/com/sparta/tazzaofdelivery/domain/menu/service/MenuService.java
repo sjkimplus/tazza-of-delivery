@@ -8,7 +8,7 @@ import com.sparta.tazzaofdelivery.domain.menu.dto.request.MenuSaveRequest;
 import com.sparta.tazzaofdelivery.domain.menu.repository.MenuRepository;
 import com.sparta.tazzaofdelivery.domain.store.entity.Store;
 import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
-import com.sparta.tazzaofdelivery.domain.user.AuthUser;
+import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +65,7 @@ public class MenuService {
 
     // 가게 사장님 권한확인
     private void authCheck(AuthUser authUser, Store store) {
-        if (!Objects.equals(store.getUser().getId(), authUser.getId())) {
+        if (!Objects.equals(store.getUser().getUserId(), authUser.getId())) {
             throw new TazzaException(ErrorCode.MENU_CREATE_UNAUTHORIZED);
         }
     }
