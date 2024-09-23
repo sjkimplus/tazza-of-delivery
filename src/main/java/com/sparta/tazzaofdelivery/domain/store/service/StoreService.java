@@ -8,12 +8,14 @@ import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetResponse;
+import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreIntegratedResponse;
 import com.sparta.tazzaofdelivery.domain.store.entity.Store;
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
+import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,12 +30,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     // 가게 생성
     public StoreCreateResponse createStore(StoreCreateRequest request, AuthUser authUser) {
-        User user = User.fromAuthUser(authUser);
+        User user = userRepository.findById(authUser.getId()).orElseThrow(
+                () -> new TazzaException(ErrorCode.USER_NOT_FOUND));
 
-        if(!authUser.getUserRole().equals(UserType.OWNER)){
+        if(!user.getUserType().equals(UserType.OWNER)){
             throw new TazzaException(ErrorCode.STORE_FORBIDDEN);
         }
 
@@ -105,4 +109,14 @@ public class StoreService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<StoreIntegratedResponse> searchStores(String storeName, String menuName, StoreStatus status) {
+        List<Store> stores = storeRepository.searchStoresWithMenu(storeName, menuName, status);
+        List<StoreIntegratedResponse> storeList = new ArrayList<>();
+        for (Store store : stores) {
+            StoreIntegratedResponse response = new StoreIntegratedResponse(store.getStoreName(), store.getCreatedAt(), store.getClosedAt(), store.getStatus());
+            storeList.add(response);
+        }
+        return storeList;
+    }
 }

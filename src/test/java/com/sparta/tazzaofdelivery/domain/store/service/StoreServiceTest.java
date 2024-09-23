@@ -30,7 +30,7 @@ class StoreServiceTest {
         AuthUser authUser = new AuthUser(1L, UserType.OWNER);
         User user = User.fromAuthUser(authUser);
 
-        StoreCreateRequest request = new StoreCreateRequest("아아", LocalTime.now(), LocalTime.now().plusHours(10),1000L, "오늘의 가게 공지");
+//        StoreCreateRequest request = new StoreCreateRequest("아아", LocalTime.now(), LocalTime.now().plusHours(10),1000L, "오늘의 가게 공지");
 
 
 

@@ -6,6 +6,8 @@ import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetResponse;
+import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreIntegratedResponse;
+import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.store.service.StoreService;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +45,12 @@ public class StoreController {
       return ResponseEntity.ok("가게가 정상 폐업 처리 되었습니다. ");
     }
 
+    // 통합검색
+    @GetMapping("/search")
+    public ResponseEntity<List<StoreIntegratedResponse>> searchStores(@RequestParam(required = false) String storeName,
+                                                                      @RequestParam(required = false) String menuName,
+                                                                      @RequestParam(required = false) StoreStatus status){
+        return ResponseEntity.ok(storeService.searchStores(storeName, menuName, status));
+    }
 
 }
