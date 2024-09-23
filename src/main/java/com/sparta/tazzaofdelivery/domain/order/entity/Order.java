@@ -86,4 +86,8 @@ public class Order {
         this.user=orderUser;
         this.store=orderStore;
     }
+
+    public void approve(OrderStatus orderStatus) {
+        this.orderStatus=orderStatus;
+    }
 }

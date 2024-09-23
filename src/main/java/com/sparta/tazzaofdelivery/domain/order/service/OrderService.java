@@ -9,6 +9,7 @@ import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.menu.repository.MenuRepository;
 import com.sparta.tazzaofdelivery.domain.order.dto.request.OrderCreateRequest;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderCreateResponse;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderStatusResponse;
 import com.sparta.tazzaofdelivery.domain.order.entity.Order;
 import com.sparta.tazzaofdelivery.domain.order.orderconfig.OrderStatus;
 import com.sparta.tazzaofdelivery.domain.order.repository.OrderRepository;
@@ -87,6 +88,48 @@ public class OrderService {
                 .build();
     }
 
+    // 주문 수락
+    public OrderStatusResponse approveOrder(AuthUser authUser, Long orderId) {
+        Order order = orderUserAuthentication(authUser.getId(), orderId);
+
+        order.approve(OrderStatus.PREPARE);
+        return OrderStatusResponse.builder()
+                .orderId(order.getOrderId())
+                .orderStatus(order.getOrderStatus())
+                .build();
+    }
+
+    // 배달 시작
+    public OrderStatusResponse deliverOrder(AuthUser authUser, Long orderId) {
+        Order order = orderUserAuthentication(authUser.getId(), orderId);
+
+        order.approve(OrderStatus.DELIVERY);
+        return OrderStatusResponse.builder()
+                .orderId(order.getOrderId())
+                .orderStatus(order.getOrderStatus())
+                .build();
+    }
+
+
+
+
+    // 주문한 사용자와 로그인한 사용자가 동일한지 검증
+    private Order orderUserAuthentication(Long userId, Long orderId) {
+        User user = findUserByUserId(userId);
+        Order order = findOrderByOrderId(orderId);
+
+        if(!order.getUser().getUserId().equals(user.getUserId())) {
+            throw new TazzaException(ErrorCode.ORDER_USER_NOT_EQUAL);
+        }
+        return order;
+    }
+
+    // 주문 확인
+    private Order findOrderByOrderId(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(()-> new TazzaException(ErrorCode.ORDER_NOT_FOUND));
+    }
+
 
     // 장바구니 확인
     private Cart findCartByCartId(Long cartId) {
@@ -116,4 +159,7 @@ public class OrderService {
                 .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
         return store;
     }
+
+
+
 }
