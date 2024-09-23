@@ -4,6 +4,7 @@ import com.sparta.tazzaofdelivery.domain.exception.ErrorCode;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.menu.dto.response.MenuSaveResponse;
 import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
+import com.sparta.tazzaofdelivery.domain.search.service.SearchService;
 import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final SearchService searchService;
 
     // 가게 생성
     public StoreCreateResponse createStore(StoreCreateRequest request, AuthUser authUser) {
@@ -109,7 +111,8 @@ public class StoreService {
 
     }
 
-    @Transactional(readOnly = true)
+    // 통합 검색
+    @Transactional
     public List<StoreIntegratedResponse> searchStores(String storeName, String menuName, StoreStatus status) {
         List<Store> stores = storeRepository.searchStoresWithMenu(storeName, menuName, status);
         List<StoreIntegratedResponse> storeList = new ArrayList<>();
@@ -117,6 +120,18 @@ public class StoreService {
             StoreIntegratedResponse response = new StoreIntegratedResponse(store.getStoreName(), store.getCreatedAt(), store.getClosedAt(), store.getStatus());
             storeList.add(response);
         }
+
+        // 인기검색어 반영
+        if(storeName != null){
+            searchService.recordSearchKeyword(storeName);
+        }
+        if(menuName != null){
+            searchService.recordSearchKeyword(menuName);
+        }
+        if(status != null){
+            searchService.recordSearchKeyword(status.toString());
+        }
+
         return storeList;
     }
 }
