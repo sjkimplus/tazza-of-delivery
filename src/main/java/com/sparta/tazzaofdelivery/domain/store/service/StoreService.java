@@ -2,9 +2,12 @@ package com.sparta.tazzaofdelivery.domain.store.service;
 
 import com.sparta.tazzaofdelivery.domain.exception.ErrorCode;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
+import com.sparta.tazzaofdelivery.domain.menu.dto.response.MenuSaveResponse;
+import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
 import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
+import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetResponse;
 import com.sparta.tazzaofdelivery.domain.store.entity.Store;
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -71,21 +75,20 @@ public class StoreService {
     }
 
 
-//    // 가게 단건 조회
-//    @Transactional(readOnly = true)
-//    public StoreGetResponse getStore(Long storeId) {
-//        Store store = storeRepository.findById(storeId)
-//                .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
-//
-//        List<MenuResponse> menuResponses = new ArrayList<>();
-//        for (Menu menu : store.getMenus()){
-//            MenuResponse menuResponse = new MenuReponse(menu.getMenuId(),menu.getMenuName(), menu.getPrice());
-//            menuResponses.add(menuResponse);
-//        }
-//
-//        return new StoreGetResponse(store.getStoreName(), menuResponses);
-//
-//    }
+    // 가게 단건 조회
+    @Transactional(readOnly = true)
+    public StoreGetResponse getStore(Long storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
+
+        List<MenuSaveResponse> menuResponses = store.getMenus().stream()
+                .filter(menu -> !menu.isDeleted())
+                .map(MenuSaveResponse::new)
+                .collect(Collectors.toList());
+
+        return new StoreGetResponse(store.getStoreName(), menuResponses);
+
+    }
 
     // 가게 폐업
     public void deleteStore(Long storeId, AuthUser authUser){
