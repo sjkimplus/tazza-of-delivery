@@ -1,4 +1,4 @@
-package com.sparta.tazzaofdelivery.domain.order.dto.request;
+package com.sparta.tazzaofdelivery.domain.cart.dto.request;
 
 import lombok.Getter;
 

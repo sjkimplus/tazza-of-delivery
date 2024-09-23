@@ -1,16 +1,7 @@
 package com.sparta.tazzaofdelivery.domain.order.repository;
 
-import com.sparta.tazzaofdelivery.domain.order.entity.Cart;
-import com.sparta.tazzaofdelivery.domain.order.orderconfig.CartStatus;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
-
 
 
 @SpringBootTest
