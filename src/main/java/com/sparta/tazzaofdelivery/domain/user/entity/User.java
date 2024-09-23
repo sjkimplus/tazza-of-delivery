@@ -1,6 +1,7 @@
 package com.sparta.tazzaofdelivery.domain.user.entity;
 
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
+import com.sparta.tazzaofdelivery.domain.user.dto.request.UserUpdateRequest;
 import com.sparta.tazzaofdelivery.domain.user.enums.UserStatus;
 import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
 import jakarta.persistence.*;
@@ -66,9 +67,15 @@ public class User {
         this.userType = userRole;
     }
 
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
+    }
+
+    public void update(UserUpdateRequest userUpdateRequest){
+        if(userUpdateRequest.getEmail() != null) this.email = userUpdateRequest.getEmail();
+    }
+
     public static User fromAuthUser(AuthUser authUser) {
         return new User(authUser.getId(), authUser.getUserRole());
     }
-
-
 }

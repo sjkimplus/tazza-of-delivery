@@ -52,11 +52,11 @@ public class AuthFilter implements Filter {
                 System.out.println(info.get("auth"));
 
 
-                User user = userRepository.findByEmail(info.getSubject()).orElseThrow(() ->
+                User user = userRepository.findById(Long.parseLong(info.getId())).orElseThrow(() ->
                         new NullPointerException("Not Found User")
                 );
 
-                // no sure
+                // not sure
                 request.setAttribute("user", user);
                 request.setAttribute("id", user.getUserId());
                 request.setAttribute("userType", user.getUserType());
