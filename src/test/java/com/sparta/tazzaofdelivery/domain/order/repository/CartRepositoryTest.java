@@ -21,8 +21,7 @@ class CartRepositoryTest {
     private CartRepository cartRepository;
 
     @Test
-    @DisplayName("Redis Entity 저장 TEST")
-    void RedisEntitySaveTest() {
+    void Redis_Cart_Entity_저장_Test() {
         Cart cart = Cart.builder()
                 .cartId(1L)
                 .storeId(1L)
@@ -37,15 +36,14 @@ class CartRepositoryTest {
     }
 
     @Test
-    @DisplayName("Redis Entity 조회 TEST")
-    void RedisEntityGetTest() {
+    void Redis_Cart_Entity_조회_TEST() {
         Cart cart = cartRepository.findById(1L).get();
         System.out.println(cart.getCartId());
         System.out.println(cart.getStoreId());
         System.out.println(cart.getUserId());
         System.out.println(cart.getMenu());
         System.out.println(cart.getCartCreated());
-        System.out.println(cart.getCartStatus());
+        System.out.println(cart.getCartStatus().getCartDesc());
         System.out.println("::: 장바구니 조회 완료 :::");
 
     }

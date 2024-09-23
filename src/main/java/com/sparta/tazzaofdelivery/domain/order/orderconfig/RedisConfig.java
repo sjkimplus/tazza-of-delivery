@@ -1,5 +1,7 @@
 package com.sparta.tazzaofdelivery.domain.order.orderconfig;
 
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,17 +14,28 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class RedisConfig {
 
+    @Value("${spring.data.redis.host}")
+    private String host;
+
+    @Value("${spring.data.redis.port}")
+    private int port;
+
+
 
     // Redis를 데이터 베이스와 연결 설정하는 메서드
      @Bean
-     LettuceConnectionFactory lettuceConnectionFactory() {
-         return new LettuceConnectionFactory();
+     public RedisConnectionFactory redisConnectionFactory() {
+         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+         redisStandaloneConfiguration.setHostName(host);
+         redisStandaloneConfiguration.setPort(port);
+         return new LettuceConnectionFactory(redisStandaloneConfiguration);
      }
 
+
      @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+     public RedisTemplate<String, Object> redisTemplate() {
          RedisTemplate<String,Object> template = new RedisTemplate<>();
-         template.setConnectionFactory(lettuceConnectionFactory());
+         template.setConnectionFactory(redisConnectionFactory());
          return template;
      }
 

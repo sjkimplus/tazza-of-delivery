@@ -5,18 +5,24 @@ import com.sparta.tazzaofdelivery.domain.order.orderconfig.CartStatusConverter;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.time.LocalDateTime;
 
-
+//@Entity
+//@NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @RedisHash(value = "cart", timeToLive = 60*60*24)
 public class Cart {
 
     // cart_id : 장바구니 ID
     @Id
+    @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", nullable = false)
     private Long cartId;
