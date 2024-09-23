@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 //@Entity
 //@NoArgsConstructor
@@ -38,6 +39,7 @@ public class Cart {
     // menu : 메뉴 JSON
     @Column(name = "menu", nullable = false, length = 500)
     private String menu;
+//    private List<MenuOrder> menuorderlist
 
     // created_at : 장바구니에 생성 시간
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
 
     private final CartService cartService;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
+    // 장바구니 음식 담기
     @PostMapping("/carts")
     public ResponseEntity<CartCreateResponse> createCart(
             @RequestBody CartCreateRequest cartAddRequest,

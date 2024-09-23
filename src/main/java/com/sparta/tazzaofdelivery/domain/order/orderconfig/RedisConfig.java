@@ -8,6 +8,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 
 // Redis를 사용하기 위해 Redis 클라이언트 라이브러리 중 Lettuce를 사용하여 Redis 설정 클래스
@@ -36,6 +38,9 @@ public class RedisConfig {
      public RedisTemplate<String, Object> redisTemplate() {
          RedisTemplate<String,Object> template = new RedisTemplate<>();
          template.setConnectionFactory(redisConnectionFactory());
+
+         template.setKeySerializer(new StringRedisSerializer());
+         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
          return template;
      }
 
