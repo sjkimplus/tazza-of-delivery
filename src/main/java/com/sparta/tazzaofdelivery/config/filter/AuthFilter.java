@@ -47,15 +47,19 @@ public class AuthFilter implements Filter {
 
                 // 토큰에서 사용자 정보 가져오기
                 Claims info = jwtUtil.getUserInfoFromToken(token);
+                System.out.println(info.getId());
+                System.out.println(info.getSubject());
+                System.out.println(info.get("auth"));
 
-                User user = userRepository.findById(Long.parseLong(info.getId())).orElseThrow(() ->
+
+                User user = userRepository.findByEmail(info.getSubject()).orElseThrow(() ->
                         new NullPointerException("Not Found User")
                 );
 
                 // no sure
                 request.setAttribute("user", user);
                 request.setAttribute("id", user.getUserId());
-                request.setAttribute("type", user.getUserType());
+                request.setAttribute("userType", user.getUserType());
                 chain.doFilter(request, response); // 다음 Filter 로 이동
             } else {
                 throw new IllegalArgumentException("Not Found Token");
