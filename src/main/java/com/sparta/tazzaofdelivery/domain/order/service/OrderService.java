@@ -20,7 +20,6 @@ import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
-import com.sparta.tazzaofdelivery.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +56,15 @@ public class OrderService {
         // 주문 가게
         Store orderStore = checkStore(cart.getStoreId());
 
+        LocalTime now = LocalTime.now();
+//        System.out.println("now = " + now);
+//        System.out.println("now.isBefore(orderStore.getCreatedAt()) = " + now.isBefore(orderStore.getCreatedAt()));
+//        System.out.println("now.isAfter(orderStore.getClosedAt()) = " + now.isAfter(orderStore.getClosedAt()));
+
+        if (now.isBefore(orderStore.getCreatedAt()) || now.isAfter(orderStore.getClosedAt())) {
+            throw new TazzaException(ErrorCode.STORE_NOT_OPEN);
+        }
+
         // cart 상태 주문됨으로 변경
         cart.updateStatus(CartStatus.ORDERED);
 
@@ -64,7 +72,12 @@ public class OrderService {
         Double totalPrice = orderMenu.getPrice() * cart.getMenuCount().doubleValue();
         // 메뉴 금액
         Double menuPrice = (double) orderMenu.getPrice();
-        System.out.println(":::: 메뉴 가격 ::::"+menuPrice);
+        System.out.println(":::: 메뉴 가격 ::::" + menuPrice);
+
+        if (totalPrice < orderStore.getMinimumOrderQuantity()) {
+            throw new TazzaException(ErrorCode.ORDER_FORBIDDEN);
+        }
+
 
         Order newOrder = new Order(
                 totalPrice,
@@ -98,43 +111,58 @@ public class OrderService {
     public OrderStatusResponse approveOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
 
-        order.approve(OrderStatus.PREPARE);
+//        System.out.println("order.getOrderStatus().getOrderCode() = " + order.getOrderStatus().getOrderCode());
+//        System.out.println("OrderStatus.PREPARE.getOrderCode() = " + OrderStatus.PREPARE.getOrderCode());
+        if (OrderStatus.PREPARE.getOrderCode() < order.getOrderStatus().getOrderCode()) {
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.PREPARE);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
+                .storeId(order.getStore().getStoreId())
                 .build();
     }
 
     // 배달 시작
     public OrderStatusResponse deliverOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.DELIVERY);
+        if (OrderStatus.DELIVERY.getOrderCode() < order.getOrderStatus().getOrderCode()) {
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.DELIVERY);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
+                .storeId(order.getStore().getStoreId())
                 .build();
     }
 
     // 배달 완료
     public OrderStatusResponse completeOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.COMPLETE);
+        if (OrderStatus.COMPLETE.getOrderCode() < order.getOrderStatus().getOrderCode()) {
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.COMPLETE);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
+                .storeId(order.getStore().getStoreId())
                 .build();
     }
 
     // user가 주문한 내역 조회
     public Page<OrderByUserResponse> getAllUserOrder(AuthUser authUser, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page-1,size);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
         User user = findUserByUserId(authUser.getId());
 
         Page<Order> userOrderList = orderRepository.findByUser(user, pageable)
-                .orElseThrow(()-> new TazzaException(ErrorCode.USER_ORDER_NOT_EXIST));
+                .orElseThrow(() -> new TazzaException(ErrorCode.USER_ORDER_NOT_EXIST));
 
 //        if(userOrderList.isEmpty()) {
 //            throw new TazzaException(ErrorCode.USER_ORDER_NOT_EXIST);
@@ -155,12 +183,12 @@ public class OrderService {
 
     // 가게에서 들어온 주문내역 조회
     public Page<OrderByOwnerResponse> getAllOwnerOrder(Long storeId, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page-1,size);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
         Store store = checkStore(storeId);
 
-        Page<Order> ownerOrderList = orderRepository.findByStore(store,pageable)
-                .orElseThrow(()-> new TazzaException(ErrorCode.OWNER_ORDER_NOT_EXIST));
+        Page<Order> ownerOrderList = orderRepository.findByStore(store, pageable)
+                .orElseThrow(() -> new TazzaException(ErrorCode.OWNER_ORDER_NOT_EXIST));
 
         return ownerOrderList
                 .map(order -> OrderByOwnerResponse.builder()
@@ -175,14 +203,12 @@ public class OrderService {
     }
 
 
-
-
     // 주문한 사용자와 로그인한 사용자가 동일한지 검증
     private Order orderUserAuthentication(Long userId, Long orderId) {
         User user = findUserByUserId(userId);
         Order order = findOrderByOrderId(orderId);
 
-        if(!order.getUser().getUserId().equals(user.getUserId())) {
+        if (!order.getUser().getUserId().equals(user.getUserId())) {
             throw new TazzaException(ErrorCode.ORDER_USER_NOT_EQUAL);
         }
         return order;
@@ -191,27 +217,27 @@ public class OrderService {
     // 주문 확인
     private Order findOrderByOrderId(Long orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(()-> new TazzaException(ErrorCode.ORDER_NOT_FOUND));
+                .orElseThrow(() -> new TazzaException(ErrorCode.ORDER_NOT_FOUND));
     }
 
 
     // 장바구니 확인
     private Cart findCartByCartId(Long cartId) {
         return cartRepository.findById(cartId)
-                .orElseThrow(()-> new TazzaException(ErrorCode.CART_NOT_FOUND));
+                .orElseThrow(() -> new TazzaException(ErrorCode.CART_NOT_FOUND));
     }
 
     // 사용자 확인
     private User findUserByUserId(long id) {
         return userRepository.findById(id)
-                .orElseThrow(()->new TazzaException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new TazzaException(ErrorCode.USER_NOT_FOUND));
     }
 
     // 메뉴 확인
     private Menu checkMenu(Long menuId) {
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new TazzaException(ErrorCode.MENU_NOT_FOUND));
-        if(menu.isDeleted()){
+        if (menu.isDeleted()) {
             throw new TazzaException(ErrorCode.MENU_ISDELETED);
         }
         return menu;
@@ -223,6 +249,5 @@ public class OrderService {
                 .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
         return store;
     }
-
 
 }
