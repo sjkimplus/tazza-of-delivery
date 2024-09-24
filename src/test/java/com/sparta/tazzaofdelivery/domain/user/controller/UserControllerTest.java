@@ -2,7 +2,7 @@ package com.sparta.tazzaofdelivery.domain.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.tazzaofdelivery.config.filter.JwtUtil;
-import com.sparta.tazzaofdelivery.config.filter.MockSecurityConfig;
+import com.sparta.tazzaofdelivery.domain.user.MockSecurityConfig;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserDeleteRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
@@ -150,16 +150,16 @@ class UserControllerTest {
 
     @Test
     void User_본인_프로필_검색() throws Exception {
-        AuthUser authUser = new AuthUser(1L, UserType.OWNER);
+        AuthUser authUser = new AuthUser(1L, UserType.CUSTOMER);
 
         LocalDateTime timeCreated = LocalDateTime.now();
-        UserSearchResponse response = new UserSearchResponse("goodName@email.com", "GoodName", UserType.OWNER, UserStatus.ACTIVE, timeCreated);
+        UserSearchResponse response = new UserSearchResponse("goodName@email.com", "GoodName", UserType.CUSTOMER, UserStatus.ACTIVE, timeCreated);
 
         when(userService.find(authUser.getId())).thenReturn(response);
 
         mockMvc.perform(get("/users")
                         .requestAttr("id", 1L)
-                        .requestAttr("type", UserType.OWNER))
+                        .requestAttr("type", UserType.CUSTOMER))
                 .andExpect(status().isOk());
         verify(userService, times(1)).find(eq(authUser.getId()));
     }
