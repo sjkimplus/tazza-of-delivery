@@ -8,6 +8,8 @@ import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.menu.repository.MenuRepository;
 import com.sparta.tazzaofdelivery.domain.order.dto.request.OrderCreateRequest;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByOwnerResponse;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByUserResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderCreateResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderStatusResponse;
 import com.sparta.tazzaofdelivery.domain.order.entity.Order;
@@ -20,10 +22,15 @@ import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
 import com.sparta.tazzaofdelivery.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +58,11 @@ public class OrderService {
         // 주문 가게
         Store orderStore = checkStore(cart.getStoreId());
 
+        LocalTime now = LocalTime.now();
+        if(now.isBefore(orderStore.getCreatedAt()) || now.isAfter(orderStore.getClosedAt())){
+            throw new TazzaException(ErrorCode.STORE_NOT_OPEN);
+        }
+
         // cart 상태 주문됨으로 변경
         cart.updateStatus(CartStatus.ORDERED);
 
@@ -59,6 +71,12 @@ public class OrderService {
         // 메뉴 금액
         Double menuPrice = (double) orderMenu.getPrice();
         System.out.println(":::: 메뉴 가격 ::::"+menuPrice);
+
+        if(totalPrice<orderStore.getMinimumOrderQuantity()){
+            throw new TazzaException(ErrorCode.ORDER_FORBIDDEN);
+        }
+
+
 
         Order newOrder = new Order(
                 totalPrice,
@@ -91,8 +109,11 @@ public class OrderService {
     // 주문 수락
     public OrderStatusResponse approveOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.PREPARE);
+        if(OrderStatus.PREPARE.getOrderCode() > order.getOrderStatus().getOrderCode()){
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.PREPARE);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
@@ -102,8 +123,11 @@ public class OrderService {
     // 배달 시작
     public OrderStatusResponse deliverOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.DELIVERY);
+        if(OrderStatus.DELIVERY.getOrderCode() > order.getOrderStatus().getOrderCode()){
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.DELIVERY);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
@@ -113,12 +137,62 @@ public class OrderService {
     // 배달 완료
     public OrderStatusResponse completeOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.COMPLETE);
+        if(OrderStatus.COMPLETE.getOrderCode() > order.getOrderStatus().getOrderCode()){
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.COMPLETE);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
                 .build();
+    }
+
+    // user가 주문한 내역 조회
+    public Page<OrderByUserResponse> getAllUserOrder(AuthUser authUser, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page-1,size);
+
+        User user = findUserByUserId(authUser.getId());
+
+        Page<Order> userOrderList = orderRepository.findByUser(user, pageable)
+                .orElseThrow(()-> new TazzaException(ErrorCode.USER_ORDER_NOT_EXIST));
+
+//        if(userOrderList.isEmpty()) {
+//            throw new TazzaException(ErrorCode.USER_ORDER_NOT_EXIST);
+//        }
+
+        return userOrderList
+                .map(order -> OrderByUserResponse.builder()
+                        .menuName(order.getMenuName())
+                        .menuPrice(order.getMenuPrice())
+                        .menuCount(order.getMenuCount())
+                        .orderCreatedAt(order.getOrderCreatedAt())
+                        .totalPrice(order.getTotalPrice())
+                        .store(order.getStore())
+                        .orderStatus(order.getOrderStatus())
+                        .build());
+
+    }
+
+    // 가게에서 들어온 주문내역 조회
+    public Page<OrderByOwnerResponse> getAllOwnerOrder(Long storeId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page-1,size);
+
+        Store store = checkStore(storeId);
+
+        Page<Order> ownerOrderList = orderRepository.findByStore(store,pageable)
+                .orElseThrow(()-> new TazzaException(ErrorCode.OWNER_ORDER_NOT_EXIST));
+
+        return ownerOrderList
+                .map(order -> OrderByOwnerResponse.builder()
+                        .menuName(order.getMenuName())
+                        .menuPrice(order.getMenuPrice())
+                        .menuCount(order.getMenuCount())
+                        .orderCreatedAt(order.getOrderCreatedAt())
+                        .totalPrice(order.getTotalPrice())
+                        .orderStatus(order.getOrderStatus())
+                        .user(order.getUser())
+                        .build());
     }
 
 
@@ -170,5 +244,6 @@ public class OrderService {
                 .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
         return store;
     }
+
 
 }
