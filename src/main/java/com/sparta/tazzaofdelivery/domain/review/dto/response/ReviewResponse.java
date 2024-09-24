@@ -13,5 +13,4 @@ public class ReviewResponse {
         this.content = content;
         this.rating = rating;
     }
-    // 필요한 경우 추가적인 필드 선언 가능
 }

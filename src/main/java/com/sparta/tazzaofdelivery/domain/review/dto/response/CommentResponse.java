@@ -13,5 +13,4 @@ public class CommentResponse {
         this.content = content;
         this.isOwnerComment = isOwnerComment;
     }
-    // 필요한 경우 추가적인 필드 선언 가능
 }

@@ -39,6 +39,13 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
+    // 리뷰별 댓글 조회 API
+    @GetMapping("/{reviewId}/comments")
+    public ResponseEntity<List<CommentResponse>> getCommentsByReview(@PathVariable Long reviewId) {
+        List<CommentResponse> comments = reviewService.getCommentsByReview(reviewId);
+        return ResponseEntity.ok(comments);
+    }
+
     // 사장님 댓글 생성 API
     @PostMapping("/{reviewId}/owner-comment")
     public ResponseEntity<Void> createOwnerComment(@PathVariable Long reviewId, @RequestBody CommentCreateRequest commentDto) {
@@ -46,10 +53,4 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    // 리뷰별 댓글 조회 API
-    @GetMapping("/{reviewId}/comments")
-    public ResponseEntity<List<CommentResponse>> getCommentsByReview(@PathVariable Long reviewId) {
-        List<CommentResponse> comments = reviewService.getCommentsByReview(reviewId);
-        return ResponseEntity.ok(comments);
-    }
 }

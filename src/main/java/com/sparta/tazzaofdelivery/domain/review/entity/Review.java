@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -34,12 +36,16 @@ public class Review {
     // 리뷰 내용
     private String content;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     // 생성자 (필수 필드 초기화)
-    public Review(Store store, User user, Order order, int rating, String content) {
+    public Review(Store store, User user, Order order, int rating, String content, LocalDateTime createdAt) {
         this.store = store;
         this.user = user;
         this.order = order;
         this.rating = rating;
         this.content = content;
+        this.createdAt = createdAt;
     }
 }

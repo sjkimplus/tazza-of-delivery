@@ -13,6 +13,4 @@ public class CommentCreateRequest {
         this.userId = userId;
         this.content = content;
     }
-
-    // 사장님 댓글 생성 여부는 서비스에서 처리할 것
 }

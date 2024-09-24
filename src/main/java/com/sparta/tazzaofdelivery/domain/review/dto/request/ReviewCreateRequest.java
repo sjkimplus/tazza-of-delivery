@@ -17,6 +17,4 @@ public class ReviewCreateRequest {
         this.rating = rating;
         this.content = content;
     }
-
-    // 추가적인 검증 로직 필요 시 작성
 }

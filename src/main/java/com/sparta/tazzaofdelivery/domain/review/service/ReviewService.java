@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,18 +40,18 @@ public class ReviewService {
         User user = userRepository.findById(reviewDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         Order order = orderRepository.findById(reviewDto.getOrderId())
-                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("ID가 " + reviewDto.getOrderId() + "인 주문을 찾을 수 없습니다."));
 
         Review review = new Review(
-                store, user, order, reviewDto.getRating(), reviewDto.getContent()
+                store, user, order, reviewDto.getRating(), reviewDto.getContent(), LocalDateTime.now()
         );
         reviewRepository.save(review);
     }
 
-    // 가게별 리뷰 조회
+     //가게별 리뷰 조회(최신순)
     @Transactional(readOnly = true)
     public List<ReviewResponse> getReviewsByStore(Long storeId) {
-        return reviewRepository.findByStoreId(storeId)
+        return reviewRepository.findByStore_StoreIdOrderByCreatedAtDesc(storeId)
                 .stream()
                 .map(review -> new ReviewResponse(review.getId(), review.getContent(), review.getRating()))
                 .toList();
@@ -58,20 +59,16 @@ public class ReviewService {
 
     // 댓글 생성
     public void createComment(Long reviewId, CommentCreateRequest commentDto) {
-        Review review = reviewRepository.findById(commentDto.getReviewId()).orElseThrow();
-        User user = userRepository.findById(commentDto.getUserId()).orElseThrow();
+        if (reviewId == null) {
+            throw new IllegalArgumentException("리뷰 ID는 null이 될 수 없습니다.");
+        }
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없습니다."));
+        User user = userRepository.findById(commentDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         Comment comment = new Comment(review, user, commentDto.getContent());
-        commentRepository.save(comment);
-    }
-
-    // 사장님 댓글 생성 (사장님만 가능)
-    public void createOwnerComment(Long reviewId, CommentCreateRequest commentDto) {
-        Review review = reviewRepository.findById(reviewId).orElseThrow();
-        User user = userRepository.findById(commentDto.getUserId()).orElseThrow();
-
-        // 사장님만 댓글 생성 가능 검증 로직 추가 필요
-        Comment comment = new Comment(review, user, commentDto.getContent(), true); // 사장님 댓글 여부 설정
         commentRepository.save(comment);
     }
 
@@ -82,5 +79,30 @@ public class ReviewService {
                 .stream()
                 .map(comment -> new CommentResponse(comment.getId(), comment.getContent(), comment.isOwnerComment()))
                 .toList();
+    }
+
+    // 사장님 댓글 생성 (사장님만 가능)
+    public void createOwnerComment(Long reviewId, CommentCreateRequest commentDto) {
+        if (reviewId == null) {
+            throw new IllegalArgumentException("리뷰 ID는 null이 될 수 없습니다.");
+        }
+
+        // reviewId를 사용하여 리뷰를 찾음
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("해당 리뷰를 찾을 수 없습니다."));
+
+        // userId를 사용하여 유저(사장님)를 찾음
+        User user = userRepository.findById(commentDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("해당 유저를 찾을 수 없습니다."));
+
+        // 사장님 검증 로직
+        Store store = review.getStore();
+        if (!store.getUser().equals(user)) {
+            throw new RuntimeException("사장님만 댓글을 작성할 수 있습니다.");
+        }
+
+        // 댓글 작성 로직
+        Comment comment = new Comment(review, user, commentDto.getContent(), true); // 사장님 댓글 여부 설정
+        commentRepository.save(comment);
     }
 }
