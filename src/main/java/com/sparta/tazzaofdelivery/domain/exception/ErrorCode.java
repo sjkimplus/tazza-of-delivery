@@ -29,6 +29,8 @@ public enum ErrorCode {
     ORDER_USER_NOT_EQUAL(HttpStatus.NOT_FOUND, "해당 사용자의 주문이 아닙니다."),
     USER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "사용자의 주문내역이 없습니다."),
     OWNER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND,"들어온 주문내역이 없습니다."),
+    ORDER_FORBIDDEN(HttpStatus.FORBIDDEN, "총 주문금액이 최소주문 금액보다 적습니다."),
+    ORDER_STATUS_FORBIDDEN(HttpStatus.FORBIDDEN, "현재 배달 Status 가 맞지 않습니다."),
 
 
     // Cart ErrorCode
@@ -47,6 +49,7 @@ public enum ErrorCode {
     STORE_BAD_REQUEST(HttpStatus.BAD_REQUEST,"사장님은 최대 3개의 가게까지만 운영할 수 있습니다."),
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND,"해당 가게를 찾을 수 없습니다."),
     STORE_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN,"해당 가게의 소유자가 아닙니다."),
+    STORE_NOT_OPEN(HttpStatus.BAD_REQUEST, "가게 영업 시간이 아닙니다."),
 
 
     // Favorite ErrorCode
