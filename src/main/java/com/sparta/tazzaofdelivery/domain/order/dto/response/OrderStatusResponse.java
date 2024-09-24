@@ -9,13 +9,16 @@ public class OrderStatusResponse {
 
     private final Long orderId;
     private final OrderStatus orderStatus;
+    private final Long storeId;
 
     @Builder
     public OrderStatusResponse(
             Long orderId,
-            OrderStatus orderStatus) {
+            OrderStatus orderStatus,
+            Long storeId) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
+        this.storeId = storeId;
     }
 
 }
