@@ -2,11 +2,14 @@ package com.sparta.tazzaofdelivery.domain.order.controller;
 
 import com.sparta.tazzaofdelivery.config.annotation.Auth;
 import com.sparta.tazzaofdelivery.domain.order.dto.request.OrderCreateRequest;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByUserResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderCreateResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderStatusResponse;
 import com.sparta.tazzaofdelivery.domain.order.service.OrderService;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +52,16 @@ public class OrderController {
             @PathVariable("orderId") Long orderId
     ){
         return ResponseEntity.ok(orderService.completeOrder(authUser,orderId));
+    }
+
+    // user가 주문한 내역 조회
+    @GetMapping("/orders")
+    public ResponseEntity<Page<OrderByUserResponse>> getAllUserOrder(
+            @Auth AuthUser authUser,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ){
+        return ResponseEntity.ok(orderService.getAllUserOrder(authUser,page,size));
     }
 
 
