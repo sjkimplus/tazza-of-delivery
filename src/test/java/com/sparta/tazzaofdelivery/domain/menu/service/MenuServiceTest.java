@@ -18,13 +18,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
@@ -45,7 +45,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_생성_성공() {
+    void Menu_생성_성공() {
         // given
         AuthUser authUser = new AuthUser(1L, UserType.OWNER);
         User user = User.fromAuthUser(authUser);
@@ -71,7 +71,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_생성_실패_메뉴생성권한이없는경우() {
+    void Menu_생성_실패_메뉴생성권한이없는경우() {
         // given
         AuthUser authUser1 = new AuthUser(1L, UserType.OWNER);
         User owner = User.fromAuthUser(authUser1);
@@ -89,7 +89,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_수정_성공() {
+    void Menu_수정_성공() {
         // given
         AuthUser authUser = new AuthUser(1L, UserType.OWNER);
         User user = User.fromAuthUser(authUser);
@@ -114,7 +114,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_수정_실패_메뉴수정권한이없는경우() {
+    void Menu_수정_실패_메뉴수정권한이없는경우() {
         // given
         AuthUser authUser1 = new AuthUser(1L, UserType.OWNER);
         User owner = User.fromAuthUser(authUser1);
@@ -135,7 +135,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_수정_실패_등록되지않은메뉴() {
+    void Menu_수정_실패_등록되지않은메뉴() {
         // given
         AuthUser authUser1 = new AuthUser(1L, UserType.OWNER);
 
@@ -151,7 +151,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_수정_실패_삭제된메뉴() {
+    void Menu_메뉴_수정_실패_삭제된메뉴() {
         // given
         AuthUser authUser1 = new AuthUser(1L, UserType.OWNER);
 
@@ -168,7 +168,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_수정_실패_가격입력오류() {
+    void Menu_수정_실패_가격입력오류() {
         // given
         AuthUser authUser = new AuthUser(1L, UserType.OWNER);
         User user = User.fromAuthUser(authUser);
@@ -190,7 +190,7 @@ class MenuServiceTest {
     }
 
     @Test
-    void 메뉴_삭제_성공() {
+    void Menu_삭제_성공() {
         // given
         AuthUser authUser = new AuthUser(1L, UserType.OWNER);
         User user = User.fromAuthUser(authUser);
