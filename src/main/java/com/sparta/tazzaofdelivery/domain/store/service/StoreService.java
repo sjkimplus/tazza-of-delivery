@@ -103,7 +103,7 @@ public class StoreService {
         Store store = storeRepository.findById(storeId).orElseThrow(()
                 -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
 
-        if(!Objects.equals(authUser.getId(), storeId)){
+        if(!Objects.equals(authUser.getId(), store.getUser().getUserId())) {
             throw new TazzaException(ErrorCode.STORE_DELETE_FORBIDDEN);
         }
         store.setStatus(StoreStatus.CLOSED);
