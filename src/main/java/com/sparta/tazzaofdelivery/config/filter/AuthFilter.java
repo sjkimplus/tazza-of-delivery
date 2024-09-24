@@ -57,9 +57,8 @@ public class AuthFilter implements Filter {
                 );
 
                 // not sure
-                request.setAttribute("user", user);
                 request.setAttribute("id", user.getUserId());
-                request.setAttribute("userType", user.getUserType());
+                request.setAttribute("type", user.getUserType());
                 chain.doFilter(request, response); // 다음 Filter 로 이동
             } else {
                 throw new IllegalArgumentException("Not Found Token");

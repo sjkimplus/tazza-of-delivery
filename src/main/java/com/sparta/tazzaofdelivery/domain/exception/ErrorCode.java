@@ -25,10 +25,18 @@ public enum ErrorCode {
 
     // Order ErrorCode
     ORDER_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 상태 코드 입니다."),
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 입니다."),
+    ORDER_USER_NOT_EQUAL(HttpStatus.NOT_FOUND, "해당 사용자의 주문이 아닙니다."),
+    USER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "사용자의 주문내역이 없습니다."),
+    OWNER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND,"들어온 주문내역이 없습니다."),
 
 
     // Cart ErrorCode
     CART_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니 상태 코드 입니다."),
+    CART_USER_NOT_EXIST(HttpStatus.NOT_FOUND, "해당 유저의 장바구니가 좋재하지 않습니다."),
+    CART_NOT_FOUND(HttpStatus.NOT_FOUND,"해당 장바구니는 존재하지 않습니다."),
+    CART_USER_NOT_EQUAL(HttpStatus.NOT_FOUND,"해당 사용자의 장바구니가 아닙니다."),
+
 
 
     // Review Errorcode
@@ -44,6 +52,9 @@ public enum ErrorCode {
     // Favorite ErrorCode
     ALREADY_FAVORITE(HttpStatus.BAD_REQUEST,"이미 즐겨찾기한 가게입니다." ),
     FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "즐겨찾기한 가게를 찾을 수 없습니다." ),
+
+    // search ErroCode
+    KEYWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "검색한 키워드가 없습니다."),
 
     // 아래 코드 위에 ErrorCode 작성해 주세요!
     NOT_FOUND(HttpStatus.NOT_FOUND, "찾지못했습니다.");

@@ -2,15 +2,14 @@ package com.sparta.tazzaofdelivery.domain.store.controller;
 
 
 import com.sparta.tazzaofdelivery.config.annotation.Auth;
+import com.sparta.tazzaofdelivery.domain.search.service.SearchService;
 import com.sparta.tazzaofdelivery.domain.store.dto.request.StoreCreateRequest;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreCreateResponse;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetAllResponse;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreGetResponse;
-import com.sparta.tazzaofdelivery.domain.store.dto.response.StoreIntegratedResponse;
+import com.sparta.tazzaofdelivery.domain.store.dto.response.*;
 import com.sparta.tazzaofdelivery.domain.store.enums.StoreStatus;
 import com.sparta.tazzaofdelivery.domain.store.service.StoreService;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoreController {
     private final StoreService storeService;
+    private final SearchService searchService;
 
     @PostMapping
     public ResponseEntity<StoreCreateResponse> createStore(@RequestBody StoreCreateRequest request, @Auth AuthUser authUser) {
@@ -50,7 +50,12 @@ public class StoreController {
     public ResponseEntity<List<StoreIntegratedResponse>> searchStores(@RequestParam(required = false) String storeName,
                                                                       @RequestParam(required = false) String menuName,
                                                                       @RequestParam(required = false) StoreStatus status){
-        return ResponseEntity.ok(storeService.searchStores(storeName, menuName, status));
-    }
+        List<StoreIntegratedResponse> results = storeService.searchStores(storeName, menuName, status);
 
+        if(storeName != null){
+            searchService.recordSearchKeyword(storeName);
+        }
+
+        return ResponseEntity.ok(results);
+    }
 }

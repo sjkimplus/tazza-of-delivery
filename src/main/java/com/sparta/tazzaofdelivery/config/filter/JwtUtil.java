@@ -123,36 +123,4 @@ public class JwtUtil {
         }
         return null;
     }
-
-//    public void checkAuth(String tokenValue, String email){
-//        // JWT 토큰 substring
-//        String token = substringToken(tokenValue);
-//
-//        // 토큰 검증
-//        if(!validateToken(token)){
-//            throw new IllegalArgumentException("Token Error");
-//        }
-//
-//        // 토큰에서 사용자 정보 가져오기
-//        Claims info = getUserInfoFromToken(token);
-//        String authority = (String) info.get(JwtUtil.AUTHORIZATION_KEY);
-//
-//        if(!authority.equals(email)) throw new IllegalArgumentException("권한이 없습니다.");
-//    }
-//
-//    public void checkAuthByEmail(String ownerEmail, String subjectEmail){
-//        if(!ownerEmail.equals(subjectEmail)) throw new IllegalArgumentException("권한이 없습니다.");
-//    }
-//
-//    public String getAuthId(String tokenValue){
-//        // JWT 토큰 substring
-//        String token = substringToken(tokenValue);
-//
-//        // 토큰 검증
-//        if(!validateToken(token)){
-//            throw new IllegalArgumentException("Token Error");
-//        }
-//        Claims info = getUserInfoFromToken(token);
-//        return info.getId();
-//    }
 }

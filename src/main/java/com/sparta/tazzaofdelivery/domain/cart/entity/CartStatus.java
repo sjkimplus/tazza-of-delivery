@@ -1,4 +1,4 @@
-package com.sparta.tazzaofdelivery.domain.order.orderconfig;
+package com.sparta.tazzaofdelivery.domain.cart.entity;
 
 import com.sparta.tazzaofdelivery.domain.exception.ErrorCode;
 import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
