@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -57,6 +58,11 @@ public class OrderService {
         // 주문 가게
         Store orderStore = checkStore(cart.getStoreId());
 
+        LocalTime now = LocalTime.now();
+        if(now.isBefore(orderStore.getCreatedAt()) || now.isAfter(orderStore.getClosedAt())){
+            throw new TazzaException(ErrorCode.STORE_NOT_OPEN);
+        }
+
         // cart 상태 주문됨으로 변경
         cart.updateStatus(CartStatus.ORDERED);
 
@@ -65,6 +71,10 @@ public class OrderService {
         // 메뉴 금액
         Double menuPrice = (double) orderMenu.getPrice();
         System.out.println(":::: 메뉴 가격 ::::"+menuPrice);
+
+        if(totalPrice<orderStore.getMinimumOrderQuantity()){
+            throw new TazzaException(ErrorCode.ORDER_FORBIDDEN);
+        }
 
 
 
@@ -99,8 +109,11 @@ public class OrderService {
     // 주문 수락
     public OrderStatusResponse approveOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.PREPARE);
+        if(OrderStatus.PREPARE.getOrderCode() > order.getOrderStatus().getOrderCode()){
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.PREPARE);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
@@ -110,8 +123,11 @@ public class OrderService {
     // 배달 시작
     public OrderStatusResponse deliverOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.DELIVERY);
+        if(OrderStatus.DELIVERY.getOrderCode() > order.getOrderStatus().getOrderCode()){
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.DELIVERY);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
@@ -121,8 +137,11 @@ public class OrderService {
     // 배달 완료
     public OrderStatusResponse completeOrder(AuthUser authUser, Long orderId) {
         Order order = orderUserAuthentication(authUser.getId(), orderId);
-
-        order.approve(OrderStatus.COMPLETE);
+        if(OrderStatus.COMPLETE.getOrderCode() > order.getOrderStatus().getOrderCode()){
+            throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
+        } else {
+            order.approve(OrderStatus.COMPLETE);
+        }
         return OrderStatusResponse.builder()
                 .orderId(order.getOrderId())
                 .orderStatus(order.getOrderStatus())
