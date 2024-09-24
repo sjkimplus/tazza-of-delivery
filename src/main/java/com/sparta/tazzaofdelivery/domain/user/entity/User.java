@@ -72,7 +72,8 @@ public class User {
     }
 
     public void update(UserUpdateRequest userUpdateRequest){
-        if(userUpdateRequest.getEmail() != null) this.email = userUpdateRequest.getEmail();
+        if(userUpdateRequest.getEmail() != null) {
+            this.email = userUpdateRequest.getEmail();}
     }
 
     public static User fromAuthUser(AuthUser authUser) {

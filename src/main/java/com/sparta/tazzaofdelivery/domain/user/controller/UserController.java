@@ -49,7 +49,6 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<UserSearchResponse> find(@Auth AuthUser authUser) {
-        System.out.println("authUser type = " + authUser.getUserRole());
         return ResponseEntity.ok(userService.find(authUser.getId()));
     }
 }

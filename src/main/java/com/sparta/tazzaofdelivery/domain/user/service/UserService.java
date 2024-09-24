@@ -99,7 +99,6 @@ public class UserService {
         return "삭제 완료";
     }
 
-
     public UserSearchResponse find(Long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new TazzaException(USER_NOT_FOUND)

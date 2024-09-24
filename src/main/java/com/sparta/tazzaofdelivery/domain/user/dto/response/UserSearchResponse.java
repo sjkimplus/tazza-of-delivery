@@ -4,11 +4,13 @@ import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
 import com.sparta.tazzaofdelivery.domain.user.enums.UserStatus;
 import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
 public class UserSearchResponse {
     // email, name, usertype, user status, created at
     private String email;

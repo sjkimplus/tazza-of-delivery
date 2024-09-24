@@ -1,9 +1,11 @@
 package com.sparta.tazzaofdelivery.domain.user.dto.response;
 
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UserUpdateResponse {
 
     private String name;
