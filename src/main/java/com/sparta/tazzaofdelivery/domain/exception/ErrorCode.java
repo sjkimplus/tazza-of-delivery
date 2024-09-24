@@ -17,7 +17,7 @@ public enum ErrorCode {
 
 
     // Menu ErrorCode
-    MENU_CREATE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "메뉴 등록은 가게 사장님만 가능합니다."),
+    MENU_CREATE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "메뉴 등록 및 수정은 가게 사장님만 가능합니다."),
     MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "등록되지 않은 메뉴입니다."),
     MENU_INVALID_PRICE(HttpStatus.BAD_REQUEST, "가격은 0이상의 양수만 입력가능합니다."),
     MENU_ISDELETED(HttpStatus.BAD_REQUEST, "삭제된 메뉴입니다."),
