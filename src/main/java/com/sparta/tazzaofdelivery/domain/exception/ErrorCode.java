@@ -25,10 +25,16 @@ public enum ErrorCode {
 
     // Order ErrorCode
     ORDER_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 상태 코드 입니다."),
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 입니다."),
+    ORDER_USER_NOT_EQUAL(HttpStatus.NOT_FOUND, "해당 사용자의 주문이 아닙니다."),
 
 
     // Cart ErrorCode
     CART_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니 상태 코드 입니다."),
+    CART_USER_NOT_EXIST(HttpStatus.NOT_FOUND, "해당 유저의 장바구니가 좋재하지 않습니다."),
+    CART_NOT_FOUND(HttpStatus.NOT_FOUND,"해당 장바구니는 존재하지 않습니다."),
+    CART_USER_NOT_EQUAL(HttpStatus.NOT_FOUND,"해당 사용자의 장바구니가 아닙니다."),
+
 
 
     // Review Errorcode
