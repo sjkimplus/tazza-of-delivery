@@ -2,6 +2,7 @@ package com.sparta.tazzaofdelivery.domain.order.controller;
 
 import com.sparta.tazzaofdelivery.config.annotation.Auth;
 import com.sparta.tazzaofdelivery.domain.order.dto.request.OrderCreateRequest;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByOwnerResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByUserResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderCreateResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderStatusResponse;
@@ -62,6 +63,16 @@ public class OrderController {
             @RequestParam(defaultValue = "10") Integer size
     ){
         return ResponseEntity.ok(orderService.getAllUserOrder(authUser,page,size));
+    }
+
+    // 가게에서 들어온 주문내역 조회
+    @GetMapping("/orders/{storeId}")
+    public ResponseEntity<Page<OrderByOwnerResponse>> getAllOwnerOrder(
+            @PathVariable("storeId") Long storeId,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ){
+        return ResponseEntity.ok(orderService.getAllOwnerOrder(storeId, page, size));
     }
 
 

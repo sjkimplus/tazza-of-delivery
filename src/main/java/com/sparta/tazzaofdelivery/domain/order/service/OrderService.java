@@ -8,6 +8,7 @@ import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.menu.entity.Menu;
 import com.sparta.tazzaofdelivery.domain.menu.repository.MenuRepository;
 import com.sparta.tazzaofdelivery.domain.order.dto.request.OrderCreateRequest;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByOwnerResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderByUserResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderCreateResponse;
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderStatusResponse;
@@ -152,6 +153,27 @@ public class OrderService {
 
     }
 
+    // 가게에서 들어온 주문내역 조회
+    public Page<OrderByOwnerResponse> getAllOwnerOrder(Long storeId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page-1,size);
+
+        Store store = checkStore(storeId);
+
+        Page<Order> ownerOrderList = orderRepository.findByStore(store,pageable)
+                .orElseThrow(()-> new TazzaException(ErrorCode.OWNER_ORDER_NOT_EXIST));
+
+        return ownerOrderList
+                .map(order -> OrderByOwnerResponse.builder()
+                        .menuName(order.getMenuName())
+                        .menuPrice(order.getMenuPrice())
+                        .menuCount(order.getMenuCount())
+                        .orderCreatedAt(order.getOrderCreatedAt())
+                        .totalPrice(order.getTotalPrice())
+                        .orderStatus(order.getOrderStatus())
+                        .user(order.getUser())
+                        .build());
+    }
+
 
 
 
@@ -201,5 +223,6 @@ public class OrderService {
                 .orElseThrow(() -> new TazzaException(ErrorCode.STORE_NOT_FOUND));
         return store;
     }
+
 
 }
