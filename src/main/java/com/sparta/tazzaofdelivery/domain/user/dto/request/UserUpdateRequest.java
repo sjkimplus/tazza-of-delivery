@@ -3,8 +3,10 @@ package com.sparta.tazzaofdelivery.domain.user.dto.request;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public class UserUpdateRequest {
     @Size(min = 8, message = "비밀번호는 8자리 이상입력 하셔야 합니다")
