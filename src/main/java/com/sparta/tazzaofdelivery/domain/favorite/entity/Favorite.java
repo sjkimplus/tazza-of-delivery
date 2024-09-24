@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "Favorite")
+@Table(name = "favorite")
 @NoArgsConstructor
 public class Favorite {
 

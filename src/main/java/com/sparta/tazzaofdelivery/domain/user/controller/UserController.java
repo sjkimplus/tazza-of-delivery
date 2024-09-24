@@ -5,7 +5,7 @@ import com.sparta.tazzaofdelivery.config.filter.JwtUtil;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserDeleteRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserUpdateRequest;
-import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginReponse;
+import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSearchResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSignUpResponse;
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginReponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest, HttpServletResponse httpServletResponse) {
         return ResponseEntity.ok(userService.login(jwtUtil, userLoginRequest, httpServletResponse));
     }
 

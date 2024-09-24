@@ -2,9 +2,11 @@ package com.sparta.tazzaofdelivery.domain.user.dto.response;
 
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
 import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UserSignUpResponse {
     private String email;
     private String password;

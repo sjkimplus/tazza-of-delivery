@@ -6,7 +6,7 @@ import com.sparta.tazzaofdelivery.domain.exception.TazzaException;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserDeleteRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserUpdateRequest;
-import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginReponse;
+import com.sparta.tazzaofdelivery.domain.user.dto.response.UserLoginResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSearchResponse;
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSignUpResponse;
@@ -44,7 +44,7 @@ public class UserService {
         return new UserSignUpResponse(userSignUpRequest);
     }
 
-    public UserLoginReponse login(JwtUtil jwtUtil, UserLoginRequest userLoginRequest, HttpServletResponse httpServletResponse) {
+    public UserLoginResponse login(JwtUtil jwtUtil, UserLoginRequest userLoginRequest, HttpServletResponse httpServletResponse) {
         String email = userLoginRequest.getEmail();
         String password = userLoginRequest.getPassword();
 
@@ -60,7 +60,7 @@ public class UserService {
 
         String token = jwtUtil.createToken(user.getUserId(), user.getEmail());
         jwtUtil.addJwtToCookie(token, httpServletResponse);
-        return new UserLoginReponse(user);
+        return new UserLoginResponse(user);
     }
 
     @Transactional
