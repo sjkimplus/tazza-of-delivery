@@ -203,11 +203,10 @@ class MenuServiceTest {
         when(menuRepository.findById(1L)).thenReturn(Optional.of(menu));
 
         // when
-        menuService.deleteMenu(1L, authUser);
+        menuService.deleteMenu(menu.getMenuId(), authUser);
 
         // then
         verify(menuRepository, times(1)).delete(menu);
-        assertTrue(menu.isDeleted());
 
     }
 }

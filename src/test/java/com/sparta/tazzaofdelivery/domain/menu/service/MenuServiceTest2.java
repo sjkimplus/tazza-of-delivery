@@ -41,11 +41,6 @@ class MenuServiceTest2 {
     @InjectMocks
     private MenuService menuService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void 메뉴_생성_성공() {
         // given
@@ -53,6 +48,7 @@ class MenuServiceTest2 {
         User user = User.fromAuthUser(authUser);
 
         Store store = new Store("인생치킨", LocalTime.parse("09:00:00"), LocalTime.parse("20:00:00"), 12000L, "공지사항", StoreStatus.ACTIVE, user);
+        // Mock behavior for storeRepository
         when(storeRepository.findById(1L)).thenReturn(Optional.of(store));
 
         MenuSaveRequest saveRequest = new MenuSaveRequest("후라이드치킨", 15000, Category.CHICKEN);
