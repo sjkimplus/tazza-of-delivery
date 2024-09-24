@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalTime;
@@ -28,12 +29,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
-class MenuServiceTest {
+@SpringBootTest
+class MenuServiceTest2 {
 
-    @Mock
+    @MockBean
     private MenuRepository menuRepository;
 
-    @Mock
+    @MockBean
     private StoreRepository storeRepository;
 
     @InjectMocks
