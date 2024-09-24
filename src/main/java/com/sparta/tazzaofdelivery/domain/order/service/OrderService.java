@@ -66,6 +66,8 @@ public class OrderService {
         Double menuPrice = (double) orderMenu.getPrice();
         System.out.println(":::: 메뉴 가격 ::::"+menuPrice);
 
+
+
         Order newOrder = new Order(
                 totalPrice,
                 LocalDateTime.now(),
