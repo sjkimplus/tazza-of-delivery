@@ -19,7 +19,7 @@ public class OrderCreateResponse {
     private final Long menuCount;
     private final String userName;
     private final String storeName;
-    private final Long StoreId;
+    private final Long storeId;
     private final Boolean isReview;
 
     @Builder
@@ -43,7 +43,7 @@ public class OrderCreateResponse {
         this.menuCount = menuCount;
         this.userName = user.getName();
         this.storeName = store.getStoreName();
-        this.StoreId = store.getStoreId();
+        this.storeId = store.getStoreId();
         this.isReview = isReview;
     }
 }

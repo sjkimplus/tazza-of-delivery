@@ -1,6 +1,7 @@
 package com.sparta.tazzaofdelivery.aop;
 
 import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderCreateResponse;
+import com.sparta.tazzaofdelivery.domain.order.dto.response.OrderStatusResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -19,35 +20,49 @@ import java.time.LocalDateTime;
 @Component
 public class OrderAccessLoggingAspect {
 
-    @Pointcut("execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.createOrder(..)) || execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.approveOrder(..)) || execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.deliverOrder(..)) || execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.completeOrder(..))")
-    private void OrderAccessLogControllerLayer(){
+    @Pointcut("execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.createOrder(..))")
+    private void OrderCreateAccessLogControllerLayer() {}
 
-    }
+    @Pointcut("execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.approveOrder(..)) || execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.deliverOrder(..)) || execution(* com.sparta.tazzaofdelivery.domain.order.controller.OrderController.completeOrder(..))")
+    private void OrderStatusAccessLogControllerLayer() {}
 
-    @Around("OrderAccessLogControllerLayer()")
-    public void beforeOrderAccessLogController(ProceedingJoinPoint joinPoint) throws Throwable{
+    @Around("OrderCreateAccessLogControllerLayer()")
+    public void beforeOrderAccessLogController(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        HttpServletResponse response = (HttpServletResponse)joinPoint.getArgs()[0];
 
         Object responsObject = joinPoint.proceed();
 
-
-        Object responseTest = joinPoint.getArgs()[0];
-        log.info(responseTest.toString());
-
         ResponseEntity<OrderCreateResponse> orderCreateResponse = (ResponseEntity<OrderCreateResponse>) responsObject;
-        String StoreId = orderCreateResponse.getBody().getStoreName();
-        log.info(StoreId);
 
-        LocalDateTime requestTime = LocalDateTime.now();
+        String sotreName = orderCreateResponse.getBody().getStoreName();
+//        log.info(sotreName);
+
+
+        Long StoreId = orderCreateResponse.getBody().getStoreId();
+        Long OrderId = orderCreateResponse.getBody().getOrderId();
         Long UserId = (Long) request.getAttribute("id");
+        LocalDateTime requestTime = LocalDateTime.now();
 
-        log.info(":::TEST userId : {}, time: {}", UserId, requestTime);
+        log.info("::: Order Access Log ::: - RequestTime : {}, User ID : {}, Store ID : {}, Order ID : {}",
+                requestTime, UserId, StoreId, OrderId);
 
-//        HttpServletResponse response =
-//
-//        log.info("::: Order Access Log ::: - RequestTime : {}, User ID : {}, Store ID : {}",
-//                requestTime, )
+    }
+
+    @Around("OrderStatusAccessLogControllerLayer()")
+    public void beforeOrderStatusAccessLogController(ProceedingJoinPoint joinPoint) throws Throwable {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Object responsObject = joinPoint.proceed();
+
+        ResponseEntity<OrderStatusResponse> orderCreateResponse = (ResponseEntity<OrderStatusResponse>) responsObject;
+
+        Long StoreId = orderCreateResponse.getBody().getStoreId();
+        Long OrderId = orderCreateResponse.getBody().getOrderId();
+        Long UserId = (Long) request.getAttribute("id");
+        LocalDateTime requestTime = LocalDateTime.now();
+
+        log.info("::: Order Access Log ::: - RequestTime : {}, User ID : {}, Store ID : {}, Order ID : {}",
+                requestTime, UserId, StoreId, OrderId);
 
     }
 
