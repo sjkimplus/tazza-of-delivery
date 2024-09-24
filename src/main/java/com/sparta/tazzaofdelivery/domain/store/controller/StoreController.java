@@ -27,7 +27,6 @@ public class StoreController {
         StoreCreateResponse response = storeService.createStore(request, authUser);
         System.out.println("::: authUser.getId() = " + authUser.getId());
         return ResponseEntity.ok(response);
-
     }
 
     @GetMapping

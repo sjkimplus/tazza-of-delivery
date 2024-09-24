@@ -5,7 +5,7 @@ import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.NoArgsConstructor;
+
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
