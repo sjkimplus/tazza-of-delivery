@@ -26,7 +26,6 @@ public class StoreController {
     public ResponseEntity<StoreCreateResponse> createStore(@RequestBody StoreCreateRequest request, @Auth AuthUser authUser) {
         StoreCreateResponse response = storeService.createStore(request, authUser);
         return ResponseEntity.ok(response);
-
     }
 
     @GetMapping
