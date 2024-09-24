@@ -27,6 +27,8 @@ public enum ErrorCode {
     ORDER_STATUS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 상태 코드 입니다."),
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 주문 입니다."),
     ORDER_USER_NOT_EQUAL(HttpStatus.NOT_FOUND, "해당 사용자의 주문이 아닙니다."),
+    USER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND, "사용자의 주문내역이 없습니다."),
+    OWNER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND,"들어온 주문내역이 없습니다."),
 
 
     // Cart ErrorCode
