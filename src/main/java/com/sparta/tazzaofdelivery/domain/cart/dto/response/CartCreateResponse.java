@@ -12,7 +12,7 @@ public class CartCreateResponse {
     private final Long storeId;
     private final Long userId;
     private final Long menuId;
-    private final Long menuCound;
+    private final Long menuCount;
     private final LocalDateTime cartCreatedAt;
     private final CartStatus cartStatus;
 
@@ -29,7 +29,7 @@ public class CartCreateResponse {
         this.storeId = storeId;
         this.userId = userId;
         this.menuId = menuId;
-        this.menuCound = menuCount;
+        this.menuCount = menuCount;
         this.cartCreatedAt = cartCreatedAt;
         this.cartStatus = cartStatus;
     }
