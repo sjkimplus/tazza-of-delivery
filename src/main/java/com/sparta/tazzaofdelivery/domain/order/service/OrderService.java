@@ -19,6 +19,7 @@ import com.sparta.tazzaofdelivery.domain.store.entity.Store;
 import com.sparta.tazzaofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.tazzaofdelivery.domain.user.entity.AuthUser;
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
+import com.sparta.tazzaofdelivery.domain.user.enums.UserType;
 import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -109,7 +110,8 @@ public class OrderService {
 
     // 주문 수락
     public OrderStatusResponse approveOrder(AuthUser authUser, Long orderId) {
-        Order order = orderUserAuthentication(authUser.getId(), orderId);
+        User user = verifyOwner(authUser.getId());
+        Order order = findOrderByOrderId(orderId);
 
 //        System.out.println("order.getOrderStatus().getOrderCode() = " + order.getOrderStatus().getOrderCode());
 //        System.out.println("OrderStatus.PREPARE.getOrderCode() = " + OrderStatus.PREPARE.getOrderCode());
@@ -127,7 +129,9 @@ public class OrderService {
 
     // 배달 시작
     public OrderStatusResponse deliverOrder(AuthUser authUser, Long orderId) {
-        Order order = orderUserAuthentication(authUser.getId(), orderId);
+        User user = verifyOwner(authUser.getId());
+        Order order = findOrderByOrderId(orderId);
+
         if (OrderStatus.DELIVERY.getOrderCode() < order.getOrderStatus().getOrderCode()) {
             throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
         } else {
@@ -142,7 +146,9 @@ public class OrderService {
 
     // 배달 완료
     public OrderStatusResponse completeOrder(AuthUser authUser, Long orderId) {
-        Order order = orderUserAuthentication(authUser.getId(), orderId);
+        User user = verifyOwner(authUser.getId());
+        Order order = findOrderByOrderId(orderId);
+
         if (OrderStatus.COMPLETE.getOrderCode() < order.getOrderStatus().getOrderCode()) {
             throw new TazzaException(ErrorCode.ORDER_STATUS_FORBIDDEN);
         } else {
@@ -182,8 +188,10 @@ public class OrderService {
     }
 
     // 가게에서 들어온 주문내역 조회
-    public Page<OrderByOwnerResponse> getAllOwnerOrder(Long storeId, Integer page, Integer size) {
+    public Page<OrderByOwnerResponse> getAllOwnerOrder(AuthUser authUser,Long storeId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
+
+        User user = verifyOwner(authUser.getId());
 
         Store store = checkStore(storeId);
 
@@ -212,6 +220,15 @@ public class OrderService {
             throw new TazzaException(ErrorCode.ORDER_USER_NOT_EQUAL);
         }
         return order;
+    }
+
+    private User verifyOwner(Long userId){
+        User user = findUserByUserId(userId);
+
+        if(!user.getUserType().equals(UserType.OWNER)){
+            throw new TazzaException(ErrorCode.NOT_OWNER);
+        }
+        return user;
     }
 
     // 주문 확인

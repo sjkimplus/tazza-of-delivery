@@ -31,6 +31,7 @@ public enum ErrorCode {
     OWNER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND,"들어온 주문내역이 없습니다."),
     ORDER_FORBIDDEN(HttpStatus.FORBIDDEN, "총 주문금액이 최소주문 금액보다 적습니다."),
     ORDER_STATUS_FORBIDDEN(HttpStatus.FORBIDDEN, "현재 배달 Status 가 맞지 않습니다."),
+    NOT_OWNER(HttpStatus.UNAUTHORIZED, "OWNER 권한이 없습니다."),
 
 
     // Cart ErrorCode
