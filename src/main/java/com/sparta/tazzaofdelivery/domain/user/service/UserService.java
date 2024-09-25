@@ -13,6 +13,7 @@ import com.sparta.tazzaofdelivery.domain.user.dto.response.UserSignUpResponse;
 
 import com.sparta.tazzaofdelivery.domain.user.dto.response.UserUpdateResponse;
 import com.sparta.tazzaofdelivery.domain.user.entity.User;
+import com.sparta.tazzaofdelivery.domain.user.enums.UserStatus;
 import com.sparta.tazzaofdelivery.domain.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +89,9 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new TazzaException(USER_NOT_FOUND)
         );
+
+        if (user.getUserStatus()== UserStatus.DELETED)
+            throw new TazzaException(USER_NOT_FOUND);
 
         if (!passwordEncoder.matches(userDeleteRequest.getPassword(), user.getPassword())) {
             throw new TazzaException(USER_PW_ERROR);

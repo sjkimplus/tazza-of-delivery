@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -148,16 +147,16 @@ class UserControllerTest {
 
     @Test
     void User_본인_프로필_검색() throws Exception {
-        AuthUser authUser = new AuthUser(1L, UserType.OWNER);
+        AuthUser authUser = new AuthUser(1L, UserType.CUSTOMER);
 
         LocalDateTime timeCreated = LocalDateTime.now();
-        UserSearchResponse response = new UserSearchResponse("goodName@email.com", "GoodName", UserType.OWNER, UserStatus.ACTIVE, timeCreated);
+        UserSearchResponse response = new UserSearchResponse("goodName@email.com", "GoodName", UserType.CUSTOMER, UserStatus.ACTIVE, timeCreated);
 
         when(userService.find(authUser.getId())).thenReturn(response);
 
         mockMvc.perform(get("/users")
                         .requestAttr("id", 1L)
-                        .requestAttr("type", UserType.OWNER))
+                        .requestAttr("type", UserType.CUSTOMER))
                 .andExpect(status().isOk());
         verify(userService, times(1)).find(eq(authUser.getId()));
     }

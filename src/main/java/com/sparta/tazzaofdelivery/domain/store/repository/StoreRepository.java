@@ -21,9 +21,9 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     * */
     @Query("SELECT DISTINCT s FROM Store s " +
             "LEFT JOIN s.menus m " +
-            "WHERE (:storeName IS NULL OR s.storeName LIKE %:storeName%) OR " +
-            "(:menuName IS NULL OR m.menuName LIKE %:menuName%) OR " +
-            "(:status IS NULL OR s.status = :status)")
+            "WHERE (:storeName IS NULL OR s.storeName LIKE CONCAT('%', :storeName, '%')) AND " +
+            "(:menuName IS NULL OR m.menuName LIKE CONCAT('%', :menuName, '%')) AND " +
+            "(:status IS NULL OR s.status = CONCAT('%', :status, '%'))")
     List<Store> searchStoresWithMenu(@Param("storeName") String storeName,
                                      @Param("menuName") String menuName,
                                      @Param("status") StoreStatus status);
