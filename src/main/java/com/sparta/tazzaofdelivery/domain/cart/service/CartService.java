@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,10 @@ public class CartService {
         Long menuCount = cartCreateRequest.getCount();
         // 사용자 찾기
         User orderUser = findUserByUserId(authUser.getId());
+
+        List<Cart> cartList = cartRepository.findValidCartsByUserId(orderUser.getUserId(), CartStatus.VALID)
+                .orElseThrow(()-> new TazzaException(ErrorCode.CART_EXIST));
+
 
         Cart newCart = new Cart(
                 orderMenu.getStore().getStoreId(),
