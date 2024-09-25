@@ -2,7 +2,6 @@ package com.sparta.tazzaofdelivery.domain.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.tazzaofdelivery.config.filter.JwtUtil;
-import com.sparta.tazzaofdelivery.config.filter.MockSecurityConfig;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserDeleteRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserLoginRequest;
 import com.sparta.tazzaofdelivery.domain.user.dto.request.UserSignUpRequest;
@@ -37,7 +36,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Import(MockSecurityConfig.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
