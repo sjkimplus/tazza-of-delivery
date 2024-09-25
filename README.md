@@ -74,4 +74,9 @@
 # 프로젝트 시연 영상
 ### [Tazza of Delivery : API 서버 기능 시연 영상](https://www.youtube.com/watch?v=z0IZ1PYHPcY)
 
+<br/><br/><br/>
+
+# Test Coverage
+![testcoverage](https://github.com/user-attachments/assets/e1486e65-1d24-47e9-8636-0a53b397399b)
+
 
