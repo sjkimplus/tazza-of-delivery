@@ -68,11 +68,12 @@ public class OrderController {
     // 가게에서 들어온 주문내역 조회
     @GetMapping("/orders/{storeId}")
     public ResponseEntity<Page<OrderByOwnerResponse>> getAllOwnerOrder(
+            @Auth AuthUser authUser,
             @PathVariable("storeId") Long storeId,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ){
-        return ResponseEntity.ok(orderService.getAllOwnerOrder(storeId, page, size));
+        return ResponseEntity.ok(orderService.getAllOwnerOrder(authUser, storeId, page, size));
     }
 
 

@@ -31,6 +31,7 @@ public enum ErrorCode {
     OWNER_ORDER_NOT_EXIST(HttpStatus.NOT_FOUND,"들어온 주문내역이 없습니다."),
     ORDER_FORBIDDEN(HttpStatus.FORBIDDEN, "총 주문금액이 최소주문 금액보다 적습니다."),
     ORDER_STATUS_FORBIDDEN(HttpStatus.FORBIDDEN, "현재 배달 Status 가 맞지 않습니다."),
+    NOT_OWNER(HttpStatus.UNAUTHORIZED, "OWNER 권한이 없습니다."),
 
 
     // Cart ErrorCode
@@ -38,6 +39,7 @@ public enum ErrorCode {
     CART_USER_NOT_EXIST(HttpStatus.NOT_FOUND, "해당 유저의 장바구니가 좋재하지 않습니다."),
     CART_NOT_FOUND(HttpStatus.NOT_FOUND,"해당 장바구니는 존재하지 않습니다."),
     CART_USER_NOT_EQUAL(HttpStatus.NOT_FOUND,"해당 사용자의 장바구니가 아닙니다."),
+    CART_EXIST(HttpStatus.NOT_ACCEPTABLE, "이용중인 장바구니가 존재합니다."),
 
 
 

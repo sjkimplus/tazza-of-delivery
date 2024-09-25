@@ -25,6 +25,7 @@ public class StoreController {
     @PostMapping
     public ResponseEntity<StoreCreateResponse> createStore(@RequestBody StoreCreateRequest request, @Auth AuthUser authUser) {
         StoreCreateResponse response = storeService.createStore(request, authUser);
+        System.out.println("::: authUser.getId() = " + authUser.getId());
         return ResponseEntity.ok(response);
     }
 
