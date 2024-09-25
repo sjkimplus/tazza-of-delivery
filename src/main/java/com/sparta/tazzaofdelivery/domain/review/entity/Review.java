@@ -48,4 +48,7 @@ public class Review {
         this.content = content;
         this.createdAt = createdAt;
     }
+
+    public Review(int rating, String content, User user, Order order) {
+    }
 }
