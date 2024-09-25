@@ -13,6 +13,11 @@
 |김성주|박현국|강동준|강수민|안예환|
 |---|---|---|---|---|
 |<img src ="https://github.com/user-attachments/assets/e8a7082a-b231-4c02-85ed-70091d69480c" width="100" height="100"/>|<img src="https://github.com/user-attachments/assets/8f79c055-2a2b-4ed7-bb9c-0023895e61fa" width="100" height="100"/>|<img src ="https://github.com/user-attachments/assets/1646a7a0-6177-46ca-be0d-b3450864bf89" width="100" height="100"/>|<img src ="https://github.com/user-attachments/assets/913276c3-4ea2-4f19-b05f-9864f0f0a1e2" width="100" height="100"/>|<img src ="https://github.com/user-attachments/assets/044850f2-bda9-4f76-b0e2-cf697de2cea6" width="100" height="100"/>|
+|[<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Github&logoColor=white" width="100"/>](https://github.com/sjkimplus?tab=repositories)|[<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Github&logoColor=white" width="100"/>](https://github.com/HyunKook-Park)|[<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Github&logoColor=white" width="100"/>](https://github.com/KangDongJoon)|[<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Github&logoColor=white" width="100"/>](https://github.com/kang-sumin)|[<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Github&logoColor=white" width="100"/>](https://github.com/davidan94)|
+
+### 팀 노션
+[![notion-logo](https://github.com/user-attachments/assets/b8340334-03b3-4110-a8be-5a41d2aaeab1)](https://www.notion.so/teamsparta/4b2678f7468a48f18a0970c3da153678)
+
 
 <br/><br/><br/>
 
@@ -46,6 +51,9 @@
   - 리뷰 생성
   - 리뷰 조회
   - 리뷰에 대한 사장님 댓글
+- 검색
+  - 인기 검색
+  - 통합 검색
 
 <br/><br/><br/>
 ### 3. ERD
@@ -65,4 +73,5 @@
 
 # 프로젝트 시연 영상
 ### [Tazza of Delivery : API 서버 기능 시연 영상](https://www.youtube.com/watch?v=z0IZ1PYHPcY)
+
 
