@@ -27,6 +27,4 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> searchStoresWithMenu(@Param("storeName") String storeName,
                                      @Param("menuName") String menuName,
                                      @Param("status") StoreStatus status);
-
-
 }

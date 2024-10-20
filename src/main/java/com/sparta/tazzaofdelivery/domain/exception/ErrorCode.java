@@ -65,7 +65,6 @@ public enum ErrorCode {
     NOT_FOUND(HttpStatus.NOT_FOUND, "찾지못했습니다.");
 
 
-
     private final HttpStatus status;
     private final String message;
 

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class TazzaException extends RuntimeException {
+    //  run time exceptions are only detected during the execution of your app
     private ErrorCode errorCode;
 
     public TazzaException(ErrorCode errorCode) {
